@@ -1,0 +1,7 @@
+Converts between multibyte sequences encoded in UTF-8 and sequences of their equivalent fixed-width characters of type Elem (either UCS-2 or UCS-4).
+
+Notice that if Elem is a 32bit-width character type (such as char32_t), and MaxCode is 0x10ffff, the conversion performed is between UTF-8 and UTF-32. For 16bit-width character types, this class would only generate code points that do not require surrogates (plain old UCS-2). To convert from UTF-8 to UTF-16 (both being variable-width encodings) or the other way around, see codecvt_utf8_utf16 instead.
+
+The facet uses Elem as its internal character type, and char as its external character type (encoded as UTF-8). Therefore:
+Member in converts from UTF-8 to its fixed-width character equivalent.
+Member out converts from the fixed-width wide character encoding to UTF-8.
