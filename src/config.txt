@@ -1,0 +1,6 @@
+{
+	"dataFileName" : "worddata.txt",
+	"defaultTestSize" : 10,
+	“defaultTestModeId" : 0,
+	"wordSelectStrategyId" : 0
+}

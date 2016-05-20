@@ -1,0 +1,53 @@
+[
+	{
+		"word": "apple",
+		"pron": "ˈæpl",
+		"mean": [
+			{
+				"POS": "n",
+				"explain": "苹果",
+				"example": [
+					{
+						"str": "An apple a day keeps the doctor away.",
+						"trans": "天天吃苹果，医生远离我。"
+					},
+					{
+						"str": "This is another sentence of apple.",
+						"trans": "这是关于苹果的另一个例句。"
+					}
+				]
+			}
+		],
+		"note": ["这个词太难了，记不住。"],
+		"similar": ["apples"],
+		"tag": ["primary", "1600", "3500"],
+		"level": 2,
+		"lasttime": 123456
+	},
+	{
+		"word": "banana",
+		"pron": "bəˈnɑːnə",
+		"mean": [
+			{
+				"POS": "n",
+				"explain": "香蕉",
+				"example": []
+			},
+			{
+				"POS": "n",
+				"explain": "发疯",
+				"example": [
+					{
+						"str": "to go bananas",
+						"trans": "发疯"
+					}
+				]
+			}
+		],
+		"note": [],
+		"similar": [],
+		"tag": [],
+		"level": 5,
+		"lasttime": 123456
+	}
+]
