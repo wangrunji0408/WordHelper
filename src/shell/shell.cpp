@@ -20,7 +20,7 @@ void Shell::clearScreen () const
 void Shell::printDividingLine () const
 {
 	out << std::setfill('-');
-	out << std::setw(CONSOLE_WIDTH) << "";
+	out << std::setw(CONSOLE_WIDTH) << "" << endl;
 	out << std::setfill(' ');
 }
 void Shell::printLn (string const& str) const
@@ -31,14 +31,14 @@ void Shell::printTitle (string const& str) const
 {
 	int const TOTAL_LENGTH = CONSOLE_WIDTH;
 	int const LENGTH1 = (TOTAL_LENGTH + str.length()) / 2;
-	out << std::setfill('-');
+	out << std::setfill('=');
 	out << std::setw(LENGTH1) << str;
 	out << std::setw(TOTAL_LENGTH - LENGTH1) << "" << endl;
 	out << std::setfill(' ');
 }
 void Shell::printHello () const
 {
-	printTitle("WordHelper 0.9");
+	printTitle("WordHelper " + kernel->getVersion());
 	printLn("Enter \"help\" or \"?\" to get command list.");
 }
 void Shell::printHelpInfo () const
@@ -69,6 +69,11 @@ void Shell::printHistory (int size) const
 	for(string const& word: historyList)
 		out << std::setw(2) << i++ << "  " << word << endl;
 }
+void Shell::printVariables () const
+{
+	out << "default_test_size" << " = " << kernel->getDefaultTestSize() << endl;
+	out << "default_test_mode" << " = " << kernel->getDefaultTestMode() << endl;
+}
 void Shell::printError (string const& errorInfo) const
 {
 	out << "Error: " << errorInfo << endl;
@@ -83,6 +88,7 @@ void Shell::printWordSimple (const WordInfo* word) const
 }
 void Shell::printWordFull (const WordInfo* word) const
 {
+	printDividingLine();
 	out << word -> word << "  |" << word -> pronunciation << "|" << endl;
 	for(auto const& meaning: word -> meaningList)
 	{
@@ -100,7 +106,7 @@ void Shell::printWordFull (const WordInfo* word) const
 	else
 	{
 		for(string const& tag: word->tagList)
-			out << tag << ' ';
+			out << '[' << tag << "] ";
 		out << endl;
 	}
 	
@@ -113,7 +119,7 @@ void Shell::printWordFull (const WordInfo* word) const
 		for(string const& note: word->noteList)
 			out << std::setw(2) << i << ". " << note << endl;
 	}
-	out << endl;
+	printDividingLine();
 }
 void Shell::printWordInJson (const WordInfo* word) const
 {
@@ -158,8 +164,9 @@ bool Shell::parseCommand (string const& command)
 	string cmd;
 
 	stm << command;
-	stm >> cmd;
+	commandHistoryList.push_back(command);
 
+	stm >> cmd;
 	if(cmd == "exit" || cmd == "x")
 		return false;
 	if(cmd == "")
@@ -218,17 +225,8 @@ bool Shell::parseCommand (string const& command)
 				printError("Failed to read mode name.");
 			else	// 没有参数
 			{
-				int const testModeId = kernel->getDefaultTestModeId();
-				// {"recall", "spell", "choiceE", "choiceC"}
-				if(testModeId == 0)
-					Test_RecallMode(0);
-				else if(testModeId == 1)
-					Test_SpellMode(0);
-				else if(testModeId == 2)
-					Test_ChoiceMode(0, true);
-				else if(testModeId == 3)
-					Test_ChoiceMode(0, false);
-				return true;
+				if(Test( kernel->getDefaultTestMode() ))
+					return true;
 			}
 		}
 		else
@@ -237,28 +235,11 @@ bool Shell::parseCommand (string const& command)
 			stm >> size;
 			if(stm.fail() && !stm.eof())	// int解析失败
 				printError("Failed to read word_size.");
-			else if(modeName == "spell")
-			{
-				Test_SpellMode(size);
-				return true;
-			}
-			else if(modeName == "recall")
-			{
-				Test_RecallMode(size);
-				return true;
-			}
-			else if(modeName == "choiceE")
-			{
-				Test_ChoiceMode(size, true);
-				return true;
-			}
-			else if(modeName == "choiceC")
-			{
-				Test_ChoiceMode(size, false);
-				return true;
-			}
 			else
-				printError("No such mode name.");
+			{
+				if(Test(modeName))
+					return true;
+			}
 		}
 		printLn("Usage: test [test_mode] [word_size]");
 		printLn("     test_mode: spell recall choiceE choiceC");
@@ -281,10 +262,23 @@ bool Shell::parseCommand (string const& command)
 				return true;
 			}
 		}
+		else if(name == "default_test_mode")
+		{
+			string testModeName;
+			stm >> testModeName;
+			if(stm.fail())
+				printError("Failed to read mode name.");
+			else
+			{
+				kernel->setDefaultTestMode(testModeName);
+				return true;
+			}
+		}
 		else
+		{
 			printError("No such variable name.");
+		}
 		printLn("Usage: set <variable> <value>");
-		printLn("\tvariable: default_test_size ");
 	}
 	else if(cmd == "analyze" || cmd == "a")
 	{
@@ -298,6 +292,10 @@ bool Shell::parseCommand (string const& command)
 			return true;
 		}
 		printLn("Usage: analyze <file>");
+	}
+	else if(cmd == "get")
+	{
+		printVariables();
 	}
 	else
 	{

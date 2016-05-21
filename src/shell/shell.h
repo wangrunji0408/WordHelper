@@ -19,6 +19,7 @@ class Shell: public Shell_Base
 {
 	int const DEFAULT_HISTORY_COUNT = 10;
 	int const CONSOLE_WIDTH = 80;
+	vector<string> commandHistoryList;
 protected:
 	// 功能
 	// 显示单词
@@ -29,12 +30,15 @@ protected:
 	void Test_SpellMode (int size) const;
 	void Test_RecallMode (int size) const;
 	void Test_ChoiceMode (int size, bool choiceEnglish) const;
+	bool Test (string const& modeName) const;			// 返回是否成功
 	// 文本分析
 	void textAnalyze (string const& fileName) const;
 	// 查询单词（自动检测中文/英文）
 	void searchWord (string const& word) const;
 	// 单词管理
 	void wordManage (const WordInfo*) const;
+	// 显示变量名
+	void printVariables () const;
 	// print
 	void printLn (string const&) const;					// 输出一行
 	void printTitle (string const&) const;				// 输出标题
