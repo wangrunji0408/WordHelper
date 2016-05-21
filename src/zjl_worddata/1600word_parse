@@ -71,7 +71,7 @@ int main ()
 			{
 				if (signal == 0)
 				{
-					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
+					for (int i = 0; i < 9 ; i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{
@@ -87,7 +87,7 @@ int main ()
 				}
 				else
 				{
-					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
+					for (int i = 0; i < 9 ; i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{

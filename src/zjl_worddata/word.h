@@ -55,7 +55,7 @@ struct WordInfo
 
 
 // 一些规定
-static const string WORD_PART_OF_SPEECH[] = {"n", "v", "a", "ad", "pron", "vi", "num", "vt", "int"};//pron
-static const string WORD_TAG[] = {"1600", "3500", "CET4", "CET6", "TOEFL", "GRE"};
+static const string WORD_PART_OF_SPEECH[] = {"n", "v", "a", "ad", "pron", "vi", "num", "vt", "int", "prep", "conj"};//pron
+static const string WORD_TAG[] = {"junior", "senior", "CET4", "CET6", "TOEFL", "GRE"};
 
 #endif	//_WORD_H
