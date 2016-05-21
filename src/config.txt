@@ -1,5 +1,5 @@
 {
-	"dataFileName" : "worddata_1.txt",
+	"dataFileName" : "worddata_zjl_2.txt",
 	"defaultTestSize" : 10,
 	"testModeId" : 0,
 	"wordSelectStrategyId" : 0
