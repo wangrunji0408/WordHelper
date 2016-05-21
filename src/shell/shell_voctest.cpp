@@ -2,6 +2,7 @@
 
 #include "shell.h"
 #include <iomanip>
+#include <sstream>
 
 void Shell::Test_SpellMode (int size) const
 {
@@ -12,8 +13,11 @@ void Shell::Test_SpellMode (int size) const
 	TestKernel_SpellMode* spell = kernel -> getNewSpellTestKernel (size);
 	for(int order = 1; !spell -> isEnd(); ++order)
 	{
+		std::stringstream stm;
+		stm << order << '/' << spell->getSize();
+		printTitle(stm.str());
+
 		const WordInfo* word = spell -> getWordInfoPtr();
-		out << "----------" << order << '/' << spell->getSize() << "----------" << endl;
 		for(int i = 0; i < word -> meaningList.size(); i ++) // 输出中文解释
 		{
 			if (i != 0)
@@ -51,8 +55,11 @@ void Shell::Test_RecallMode (int size) const
 	TestKernel_RecallMode* recall = kernel -> getNewRecallTestKernel (size);
 	for(int order = 1; !recall -> isEnd(); ++order)
 	{
+		std::stringstream stm;
+		stm << order << '/' << recall->getSize();
+		printTitle(stm.str());
+
 		const WordInfo* word = recall -> getWordInfoPtr();
-		out << "----------" << order << '/' << recall->getSize() << "----------" << endl;
 		out << recall -> getWordString() << endl;
 		string choice;
 		while(true)
@@ -81,6 +88,25 @@ void Shell::Test_RecallMode (int size) const
 }
 
 // 以下作者：王润基
+
+bool Shell::Test (string const& testModeName) const
+{
+	if(testModeName == "recall")
+		Test_RecallMode(0);
+	else if(testModeName == "spell")
+		Test_SpellMode(0);
+	else if(testModeName == "choiceE")
+		Test_ChoiceMode(0, true);
+	else if(testModeName == "choiceC")
+		Test_ChoiceMode(0, false);
+	else
+	{
+		printError("No such mode.");
+		return false;
+	}
+	return true;
+}
+
 void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 {
 	if(size == 0)
@@ -95,7 +121,10 @@ void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 
 	for(int order = 1; !testKernel -> isEnd(); ++order)
 	{
-		out << "----------" << order << '/' << testKernel->getSize() << "----------" << endl;
+		std::stringstream stm;
+		stm << order << '/' << testKernel->getSize();
+		printTitle(stm.str());
+
 		out << testKernel->getQuestion() << endl;
 		int i = 0;
 		for(auto const& option: testKernel->getOptionList())

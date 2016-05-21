@@ -27,7 +27,7 @@ vector<string> TextAnalyzeKernelImpl::textParser (string const& _text) {
 				tmpWord += text[pos.textPosition];
 			}
 			else {
-				textWord.push_back(tmpWord);
+				textWord.push_back( toLower(tmpWord) );
 				tmpWord = "";
 				pos.status = 0;
 			}
@@ -46,14 +46,14 @@ void TextAnalyzeKernelImpl::loadText(string const& _text) {
 }
 
 int TextAnalyzeKernelImpl::countWord (string const& word) const {
-	auto it = wordCount.find(word);
+	auto it = wordCount.find(toLower(word));
 	return it != wordCount.end()? it->second: 0;
 }
 
 vector<string> TextAnalyzeKernelImpl::getNotInDataBaseWordList () const {
 	vector<string> undetectableWordList;
 	for(auto const& pair: wordCount)
-		if(dataBase -> getWord(pair.first) != nullptr)
+		if(dataBase -> getWord(pair.first) == nullptr)
 			undetectableWordList.push_back(pair.first);
 	return undetectableWordList;
 }

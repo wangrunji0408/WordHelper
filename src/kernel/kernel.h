@@ -27,8 +27,8 @@ protected:
 	int defaultTestSize;					// 其它的都从config文件中读取
 	string dataFileName;
 	int wordSelectStrategyId;
-	int defaultTestModeId;
-	string version;
+	string defaultTestModeName;
+	string version = "0.9";
 	// 重要成员
 	DataBase* 						dataBase;
 	vector<WordSelectStrategy*> 	wordSelectStrategyList;	// 在构造时new出所有策略，此后为常量，在析构时依次delete
@@ -49,20 +49,22 @@ public:
 	// 通知dataBase保存数据到文件 析构 dataBase wordSelectStrategy
 	~Kernel ();
 	// 参数的获取与修改
+	string 	getVersion () const;
 	int 	getDefaultTestSize () const;
 	void 	setDefaultTestSize (int v);
 	string 	getDataFileName () const;
 	void 	setDataFileName (string const&);
 	string 	getConfigFileName () const;
 	void 	setConfigFileName (string const&);
-	int 	getDefaultTestModeId () const;
-	void 	setDefaultTestModeId (int testModeId);
+	vector<string> getTestModeList () const;
+	string 	getDefaultTestMode () const;
+	void 	setDefaultTestMode (string const& testModeName);
 	// SubKernel
 	WordKernel* 			getNewWordKernel (const WordInfo*) const;
 	TextAnalyzeKernel* 		getNewTextAnalyzeKernel () const;
-	TestKernel_SpellMode* 	getNewSpellTestKernel (int size) const;		// size == 0 则使用默认size
-	TestKernel_RecallMode* 	getNewRecallTestKernel (int size) const;		// ...
-	TestKernel_ChoiceMode* 	getNewChoiceTestKernel (int size, bool choiceEnglish) const;		// ...
+	TestKernel_SpellMode* 	getNewSpellTestKernel (int size) const;							// size == 0 则使用默认size
+	TestKernel_RecallMode* 	getNewRecallTestKernel (int size) const;						// ...
+	TestKernel_ChoiceMode* 	getNewChoiceTestKernel (int size, bool choiceEnglish) const;	// ...
 	// 返回搜索历史
 	vector<string> 			getSearchHistory (int size) const;
 	// 模糊搜索(英文/中文)

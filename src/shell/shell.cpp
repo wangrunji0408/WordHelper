@@ -17,39 +17,44 @@ void Shell::clearScreen () const
 	system("clear");
 	#endif
 }
+void Shell::printDividingLine () const
+{
+	out << std::setfill('-');
+	out << std::setw(CONSOLE_WIDTH) << "" << endl;
+	out << std::setfill(' ');
+}
 void Shell::printLn (string const& str) const
 {
 	out << str << endl;
 }
 void Shell::printTitle (string const& str) const
 {
-	int const TOTAL_LENGTH = 30;
+	int const TOTAL_LENGTH = CONSOLE_WIDTH;
 	int const LENGTH1 = (TOTAL_LENGTH + str.length()) / 2;
-	out << std::setfill('-');
+	out << std::setfill('=');
 	out << std::setw(LENGTH1) << str;
 	out << std::setw(TOTAL_LENGTH - LENGTH1) << "" << endl;
 	out << std::setfill(' ');
 }
 void Shell::printHello () const
 {
-	printTitle("WordHelper 0.1");
-	printLn("Enter \"help\" to get command list.");
+	printTitle("WordHelper " + kernel->getVersion());
+	printLn("Enter \"help\" or \"?\" to get command list.");
 }
 void Shell::printHelpInfo () const
 {
-	printLn("---------------------------------");
-	printLn("          Command List");
-	printLn("  exit");
-	printLn("  help");
-	printLn("  history [max_size]");
-	printLn("  search  <word>");
-	printLn("  word    <word>");
-	printLn("  voctest [test_mode] [word_size]");
-	printLn("    test_mode: spell recall choiceE choiceC");
-	printLn("  set     <variable> <value>");
-	printLn("    variable:  default_test_size");
-	printLn("  analyze <file>");
-	printLn("---------------------------------");
+	printTitle("Command List");
+	printLn("  退    出    [x] exit");
+	printLn("  帮    助    [?] help");
+	printLn("  搜索历史    [h] history [max_size]");
+	printLn("  搜索单词    [s] search  <word>");
+	printLn("  单词管理    [w] word    <word>");
+	printLn("  单词测试    [t] test    [test_mode] [word_size]");
+	printLn("                              └---> spell recall choiceE choiceC");
+	printLn("  文本分析    [a] analyze <file>");
+	printLn("  变量设置    [ ] set     <variable> <value>");
+	printLn("  变量查看    [ ] get");
+	printDividingLine();
 }
 void Shell::printHistory (int size) const
 {
@@ -63,6 +68,11 @@ void Shell::printHistory (int size) const
 	int i = 0;
 	for(string const& word: historyList)
 		out << std::setw(2) << i++ << "  " << word << endl;
+}
+void Shell::printVariables () const
+{
+	out << "default_test_size" << " = " << kernel->getDefaultTestSize() << endl;
+	out << "default_test_mode" << " = " << kernel->getDefaultTestMode() << endl;
 }
 void Shell::printError (string const& errorInfo) const
 {
@@ -78,6 +88,7 @@ void Shell::printWordSimple (const WordInfo* word) const
 }
 void Shell::printWordFull (const WordInfo* word) const
 {
+	printDividingLine();
 	out << word -> word << "  |" << word -> pronunciation << "|" << endl;
 	for(auto const& meaning: word -> meaningList)
 	{
@@ -95,7 +106,7 @@ void Shell::printWordFull (const WordInfo* word) const
 	else
 	{
 		for(string const& tag: word->tagList)
-			out << tag << ' ';
+			out << '[' << tag << "] ";
 		out << endl;
 	}
 	
@@ -108,13 +119,12 @@ void Shell::printWordFull (const WordInfo* word) const
 		for(string const& note: word->noteList)
 			out << std::setw(2) << i << ". " << note << endl;
 	}
-	out << endl;
+	printDividingLine();
 }
 void Shell::printWordInJson (const WordInfo* word) const
 {
 	out << (Json::Value)*word;
 }
-
 
 void Shell::searchWord (string const& str) const
 {
@@ -131,18 +141,21 @@ void Shell::searchWord (string const& str) const
 	}
 	else	// 判断是中文
 		wordList = kernel->fuzzySearchByChinese(str);
+
+	printTitle("Search Result");
 	if(wordList.empty())
-	{
 		printLn("(No Entry)");
-		return;
-	}
-	int i = 1;
-	for(auto word: wordList)
+	else
 	{
-		out << i++ << "  ";
-		printWordSimple(word);
-		out << endl;
+		int i = 1;
+		for(auto word: wordList)
+		{
+			out << std::setw(2) << i++ << "  ";
+			printWordSimple(word);
+			out << endl;
+		}
 	}
+	printDividingLine();
 }
 
 bool Shell::parseCommand (string const& command)
@@ -151,15 +164,16 @@ bool Shell::parseCommand (string const& command)
 	string cmd;
 
 	stm << command;
-	stm >> cmd;
+	commandHistoryList.push_back(command);
 
-	if(cmd == "exit")
+	stm >> cmd;
+	if(cmd == "exit" || cmd == "x")
 		return false;
 	if(cmd == "")
 		return true;
-	if(cmd == "help")
+	if(cmd == "help" || cmd == "?")
 		printHelpInfo();
-	else if(cmd == "history")
+	else if(cmd == "history" || cmd == "h")
 	{
 		int count = DEFAULT_HISTORY_COUNT;
 		stm >> count;
@@ -170,7 +184,7 @@ bool Shell::parseCommand (string const& command)
 		}
 		printLn("Usage: history [max_size]");
 	}
-	else if(cmd == "search")
+	else if(cmd == "search" || cmd == "s")
 	{
 		string word;
 		stm >> word;
@@ -183,7 +197,7 @@ bool Shell::parseCommand (string const& command)
 		}
 		printLn("Usage: search  <word>");
 	}
-	else if(cmd == "word")
+	else if(cmd == "word" || cmd == "w")
 	{
 		string word;
 		stm >> word;
@@ -201,7 +215,7 @@ bool Shell::parseCommand (string const& command)
 		printLn("Usage: word    <word>");
 
 	}
-	else if(cmd == "voctest")
+	else if(cmd == "test" || cmd == "t")
 	{
 		string modeName;
 		stm >> modeName;
@@ -211,17 +225,8 @@ bool Shell::parseCommand (string const& command)
 				printError("Failed to read mode name.");
 			else	// 没有参数
 			{
-				int const testModeId = kernel->getDefaultTestModeId();
-				// {"recall", "spell", "choiceE", "choiceC"}
-				if(testModeId == 0)
-					Test_RecallMode(0);
-				else if(testModeId == 1)
-					Test_SpellMode(0);
-				else if(testModeId == 2)
-					Test_ChoiceMode(0, true);
-				else if(testModeId == 3)
-					Test_ChoiceMode(0, false);
-				return true;
+				if(Test( kernel->getDefaultTestMode() ))
+					return true;
 			}
 		}
 		else
@@ -230,30 +235,13 @@ bool Shell::parseCommand (string const& command)
 			stm >> size;
 			if(stm.fail() && !stm.eof())	// int解析失败
 				printError("Failed to read word_size.");
-			else if(modeName == "spell")
-			{
-				Test_SpellMode(size);
-				return true;
-			}
-			else if(modeName == "recall")
-			{
-				Test_RecallMode(size);
-				return true;
-			}
-			else if(modeName == "choiceE")
-			{
-				Test_ChoiceMode(size, true);
-				return true;
-			}
-			else if(modeName == "choiceC")
-			{
-				Test_ChoiceMode(size, false);
-				return true;
-			}
 			else
-				printError("No such mode name.");
+			{
+				if(Test(modeName))
+					return true;
+			}
 		}
-		printLn("Usage: voctest [test_mode] [word_size]");
+		printLn("Usage: test [test_mode] [word_size]");
 		printLn("     test_mode: spell recall choiceE choiceC");
 	}
 	else if(cmd == "set")
@@ -274,12 +262,25 @@ bool Shell::parseCommand (string const& command)
 				return true;
 			}
 		}
+		else if(name == "default_test_mode")
+		{
+			string testModeName;
+			stm >> testModeName;
+			if(stm.fail())
+				printError("Failed to read mode name.");
+			else
+			{
+				kernel->setDefaultTestMode(testModeName);
+				return true;
+			}
+		}
 		else
+		{
 			printError("No such variable name.");
+		}
 		printLn("Usage: set <variable> <value>");
-		printLn("\tvariable: default_test_size ");
 	}
-	else if(cmd == "analyze")
+	else if(cmd == "analyze" || cmd == "a")
 	{
 		string fileName;
 		stm >> fileName;
@@ -292,6 +293,10 @@ bool Shell::parseCommand (string const& command)
 		}
 		printLn("Usage: analyze <file>");
 	}
+	else if(cmd == "get")
+	{
+		printVariables();
+	}
 	else
 	{
 		printError("Invalid command.");
@@ -302,6 +307,7 @@ bool Shell::parseCommand (string const& command)
 void Shell::run ()
 {
 	string command;
+	clearScreen();
 	printHello();
 	do
 	{

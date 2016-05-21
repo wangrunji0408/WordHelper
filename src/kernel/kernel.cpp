@@ -35,7 +35,7 @@ void Kernel::setConfigDefault ()
 	defaultTestSize = 50;
 	dataFileName = "worddata.txt";
 	wordSelectStrategyId = 0;
-	defaultTestModeId = 0;
+	defaultTestModeName = "recall";
 }
 void Kernel::loadConfig ()
 {
@@ -53,7 +53,7 @@ void Kernel::loadConfig ()
 	defaultTestSize = json["defaultTestSize"].asInt();
 	dataFileName = json["dataFileName"].asString();
 	wordSelectStrategyId = json["wordSelectStrategyId"].asInt();
-	defaultTestModeId = json["defaultTestModeId"].asInt();
+	defaultTestModeName = json["defaultTestModeName"].asString();
 
 	printLog("Success to load config.");
 }
@@ -70,7 +70,7 @@ void Kernel::writeConfig()
 	json["defaultTestSize"] = defaultTestSize;
 	json["dataFileName"] = dataFileName;
 	json["wordSelectStrategyId"] = wordSelectStrategyId;
-	json["defaultTestModeId"] = defaultTestModeId;
+	json["defaultTestModeName"] = defaultTestModeName;
 	configFileOut << json;
 
 	printLog("Success to save config.");
@@ -100,6 +100,10 @@ void Kernel::writeWordData ()
 	printLog("Success to save word data.");
 }
 
+string Kernel::getVersion () const
+{
+	return version;
+}
 int Kernel::getDefaultTestSize () const
 {
 	return defaultTestSize;
@@ -131,9 +135,21 @@ void Kernel::setConfigFileName (string const& fileName)
 	configFileName = fileName;
 	printLog("Success to set config file name: " + fileName);
 }
-int Kernel::getDefaultTestModeId () const
+
+vector<string> Kernel::getTestModeList () const
 {
-	return defaultTestModeId;
+	return TEST_MODE_NAME;
+}
+string Kernel::getDefaultTestMode () const
+{
+	return defaultTestModeName;
+}
+void Kernel::setDefaultTestMode (string const& testModeName)
+{
+	if(std::find(TEST_MODE_NAME.begin(), TEST_MODE_NAME.end(), testModeName) == TEST_MODE_NAME.end())
+		printLog("Failed to set default test mode.  No such name: " + testModeName);
+	else
+		defaultTestModeName = testModeName;
 }
 WordSelectStrategy* Kernel::getWordSelectStrategy() const
 {

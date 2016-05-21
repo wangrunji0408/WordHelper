@@ -1,6 +1,6 @@
 {
 	"dataFileName" : "worddata.txt",
-	"defaultTestModeId" : 0,
+	"defaultTestModeName" : "recall",
 	"defaultTestSize" : 10,
 	"wordSelectStrategyId" : 0
 }

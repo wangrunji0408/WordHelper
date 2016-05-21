@@ -1,6 +1,15 @@
 #include "word.h"
+#include <cctype>
 
 // 作者：王润基
+
+string toLower (string const& str)
+{
+	string s = str;
+	std::transform(s.begin(), s.end(), s.begin(), (int (*)(int))tolower);
+	return s;
+}
+
 // Sentence Meaning WordInfo 三个类 与 Json::Value 的相互转化
 
 Sentence::Sentence (Json::Value const& json)

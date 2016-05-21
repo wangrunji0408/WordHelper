@@ -19,7 +19,7 @@ vector<WordInfo*> WordSelectStrategy_Random::getWordList (int number) const
 			if(sign == max)
 				return false;
 			bool result = false;
-			if(word.rememberLevel < 7)
+			if(word.rememberLevel < WORD_LEVEL_MAX)
 			{
 				result = true;
 			}
