@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
 #include "database.h"
 using namespace std;
 
@@ -27,8 +28,12 @@ int main (int argc, char** argv)
 	}
 	DataBase* dataBase = new DataBaseImpl;
 	dataBase->loadFromIStream(fin);
+	fin.close();
 
-	for(auto word: dataBase->getWordList())
+	map<string, int> tagCount;
+
+	auto wordList = dataBase->getWordList();
+	for(auto word: wordList)
 	{
 		word->lastTestTime = 0;
 		word->rememberLevel = 0;
@@ -37,7 +42,13 @@ int main (int argc, char** argv)
 				it = word->meaningList.erase(it);
 			else
 				++it;
+		for(auto tag: word->tagList)
+			tagCount[tag]++;
 	}
+
+	cout << "Total = " << wordList.size() << endl;
+	for(auto pair: tagCount)
+		cout << "[" << pair.first << "] = " << pair.second << endl;
 
 	dataBase->writeToOStream(fout);
 }

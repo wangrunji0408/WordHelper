@@ -10,7 +10,7 @@
 
 同时向 failedWord.txt 输出解析失败的词条。
 
-这些程序必须按顺序调用：Senior Junior CET4 CET6，否则会有未知后果。
+这些程序必须按顺序调用：Senior Junior CET4 CET6 GRE，否则会有未知后果。
 
 ### DataBaseInit.cpp
 
