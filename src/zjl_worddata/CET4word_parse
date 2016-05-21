@@ -51,8 +51,6 @@ int main ()
 				{
 					sign ++;
 					signal = i;
-					failedOut << s << endl;
-					failedOut << i << endl;
 					break;
 				}
 			}
