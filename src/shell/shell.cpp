@@ -17,13 +17,19 @@ void Shell::clearScreen () const
 	system("clear");
 	#endif
 }
+void Shell::printDividingLine () const
+{
+	out << std::setfill('-');
+	out << std::setw(CONSOLE_WIDTH) << "";
+	out << std::setfill(' ');
+}
 void Shell::printLn (string const& str) const
 {
 	out << str << endl;
 }
 void Shell::printTitle (string const& str) const
 {
-	int const TOTAL_LENGTH = 30;
+	int const TOTAL_LENGTH = CONSOLE_WIDTH;
 	int const LENGTH1 = (TOTAL_LENGTH + str.length()) / 2;
 	out << std::setfill('-');
 	out << std::setw(LENGTH1) << str;
@@ -32,24 +38,23 @@ void Shell::printTitle (string const& str) const
 }
 void Shell::printHello () const
 {
-	printTitle("WordHelper 0.1");
-	printLn("Enter \"help\" to get command list.");
+	printTitle("WordHelper 0.9");
+	printLn("Enter \"help\" or \"?\" to get command list.");
 }
 void Shell::printHelpInfo () const
 {
-	printLn("---------------------------------");
-	printLn("          Command List");
-	printLn("  exit");
-	printLn("  help");
-	printLn("  history [max_size]");
-	printLn("  search  <word>");
-	printLn("  word    <word>");
-	printLn("  voctest [test_mode] [word_size]");
-	printLn("    test_mode: spell recall choiceE choiceC");
-	printLn("  set     <variable> <value>");
-	printLn("    variable:  default_test_size");
-	printLn("  analyze <file>");
-	printLn("---------------------------------");
+	printTitle("Command List");
+	printLn("  退    出    [x] exit");
+	printLn("  帮    助    [?] help");
+	printLn("  搜索历史    [h] history [max_size]");
+	printLn("  搜索单词    [s] search  <word>");
+	printLn("  单词管理    [w] word    <word>");
+	printLn("  单词测试    [t] test    [test_mode] [word_size]");
+	printLn("                              └---> spell recall choiceE choiceC");
+	printLn("  文本分析    [a] analyze <file>");
+	printLn("  变量设置    [ ] set     <variable> <value>");
+	printLn("  变量查看    [ ] get");
+	printDividingLine();
 }
 void Shell::printHistory (int size) const
 {
@@ -115,7 +120,6 @@ void Shell::printWordInJson (const WordInfo* word) const
 	out << (Json::Value)*word;
 }
 
-
 void Shell::searchWord (string const& str) const
 {
 	static const int RESULT_MAX_SIZE = 5;
@@ -131,18 +135,21 @@ void Shell::searchWord (string const& str) const
 	}
 	else	// 判断是中文
 		wordList = kernel->fuzzySearchByChinese(str);
+
+	printTitle("Search Result");
 	if(wordList.empty())
-	{
 		printLn("(No Entry)");
-		return;
-	}
-	int i = 1;
-	for(auto word: wordList)
+	else
 	{
-		out << i++ << "  ";
-		printWordSimple(word);
-		out << endl;
+		int i = 1;
+		for(auto word: wordList)
+		{
+			out << std::setw(2) << i++ << "  ";
+			printWordSimple(word);
+			out << endl;
+		}
 	}
+	printDividingLine();
 }
 
 bool Shell::parseCommand (string const& command)
@@ -153,13 +160,13 @@ bool Shell::parseCommand (string const& command)
 	stm << command;
 	stm >> cmd;
 
-	if(cmd == "exit")
+	if(cmd == "exit" || cmd == "x")
 		return false;
 	if(cmd == "")
 		return true;
-	if(cmd == "help")
+	if(cmd == "help" || cmd == "?")
 		printHelpInfo();
-	else if(cmd == "history")
+	else if(cmd == "history" || cmd == "h")
 	{
 		int count = DEFAULT_HISTORY_COUNT;
 		stm >> count;
@@ -170,7 +177,7 @@ bool Shell::parseCommand (string const& command)
 		}
 		printLn("Usage: history [max_size]");
 	}
-	else if(cmd == "search")
+	else if(cmd == "search" || cmd == "s")
 	{
 		string word;
 		stm >> word;
@@ -183,7 +190,7 @@ bool Shell::parseCommand (string const& command)
 		}
 		printLn("Usage: search  <word>");
 	}
-	else if(cmd == "word")
+	else if(cmd == "word" || cmd == "w")
 	{
 		string word;
 		stm >> word;
@@ -201,7 +208,7 @@ bool Shell::parseCommand (string const& command)
 		printLn("Usage: word    <word>");
 
 	}
-	else if(cmd == "voctest")
+	else if(cmd == "test" || cmd == "t")
 	{
 		string modeName;
 		stm >> modeName;
@@ -253,7 +260,7 @@ bool Shell::parseCommand (string const& command)
 			else
 				printError("No such mode name.");
 		}
-		printLn("Usage: voctest [test_mode] [word_size]");
+		printLn("Usage: test [test_mode] [word_size]");
 		printLn("     test_mode: spell recall choiceE choiceC");
 	}
 	else if(cmd == "set")
@@ -279,7 +286,7 @@ bool Shell::parseCommand (string const& command)
 		printLn("Usage: set <variable> <value>");
 		printLn("\tvariable: default_test_size ");
 	}
-	else if(cmd == "analyze")
+	else if(cmd == "analyze" || cmd == "a")
 	{
 		string fileName;
 		stm >> fileName;
@@ -302,6 +309,7 @@ bool Shell::parseCommand (string const& command)
 void Shell::run ()
 {
 	string command;
+	clearScreen();
 	printHello();
 	do
 	{

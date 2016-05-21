@@ -18,6 +18,7 @@ public:
 class Shell: public Shell_Base
 {
 	int const DEFAULT_HISTORY_COUNT = 10;
+	int const CONSOLE_WIDTH = 80;
 protected:
 	// 功能
 	// 显示单词
@@ -29,14 +30,15 @@ protected:
 	void Test_RecallMode (int size) const;
 	void Test_ChoiceMode (int size, bool choiceEnglish) const;
 	// 文本分析
-	void textAnalyze (string const& fileName) const;	// 【未实现】
+	void textAnalyze (string const& fileName) const;
 	// 查询单词（自动检测中文/英文）
 	void searchWord (string const& word) const;
 	// 单词管理
-	void wordManage (const WordInfo*) const;			// 【未实现】
+	void wordManage (const WordInfo*) const;
 	// print
 	void printLn (string const&) const;					// 输出一行
 	void printTitle (string const&) const;				// 输出标题
+	void printDividingLine () const;					// 输出分割线
 	void printHello () const;							// 输出欢迎信息
 	void printHelpInfo () const;						// 输出帮助
 	void printHistory (int count) const;				// 输出查询历史
