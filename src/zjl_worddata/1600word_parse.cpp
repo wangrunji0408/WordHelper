@@ -21,19 +21,35 @@ string delSpace (string const& s)
 int main ()
 {
 	DataBaseImpl* dataBase = new DataBaseImpl;
-	ifstream ifst("3500word.txt");
-	ofstream ferr("worddata_zjl.txt");
+	ifstream ifst("juniorWord.txt");
+	ifstream from_old("worddata_zjl.txt");
+	ofstream ferr("worddata_zjl_2.txt");
 	ofstream failedOut ("failedWord.txt");
+	dataBase -> loadFromIStream(from_old);
 	string s;
 	while (getline(ifst, s) && s.size())
 	{
 		if (s.size() > 2)
 		{
 			WordInfo* word = new WordInfo;
-			int sign = 0;
+			int sign = -1;
 			int signal = 0;
 			int pos = 0;
-			for (int i = 1; i < s.size() - 1; i ++)
+			int start = 0;
+			bool hasfound = false;
+			for (int i = 0; i < s.size() - 1; i ++)
+			{
+				if (s[i] == ' ' && s[i + 1] != ' ')
+				{
+					start = i + 1;
+					sign ++;
+				}
+			}
+			if (sign == -1)
+			{
+				continue;
+			}
+			for (int i = start; i < s.size() - 1; i ++)
 			{
 				if (s[i] == ' ' && s[i + 1] == '[')
 				{
@@ -43,7 +59,11 @@ int main ()
 			}
 			if (sign == 1)
 			{
-				word -> word = s.substr(0, signal);
+				word -> word = s.substr(start, signal - start);
+				if (dataBase -> getWord(word -> word ))
+				{
+					word = dataBase -> getWord(word -> word );
+				}
 			}
 			else 
 			{
@@ -69,13 +89,14 @@ int main ()
 			string part;
 			while (pos < s.size())
 			{
+				
 				if (signal == 0)
 				{
-					for (int i = 0; i < 9 ; i ++)
+					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{
-							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i] && s[pos + WORD_PART_OF_SPEECH[i].size()] == '.')
+							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i])
 							{
 								part = WORD_PART_OF_SPEECH[i];
 								signal = pos + WORD_PART_OF_SPEECH[i].size();
@@ -87,11 +108,11 @@ int main ()
 				}
 				else
 				{
-					for (int i = 0; i < 9 ; i ++)
+					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{
-							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i] && s[pos + WORD_PART_OF_SPEECH[i].size()] == '.')
+							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i])
 							{
 								if (part.size() != 0)
 								{
@@ -135,16 +156,21 @@ int main ()
 				word->word = delSpace(word->word);
 				for(auto& meaning: word->meaningList)
 					meaning.explain = delSpace(meaning.explain);
-				word->tagList.push_back(WORD_TAG[1]);
-				dataBase -> addWord(word);
+				word->tagList.push_back(WORD_TAG[0]);
+				if (!hasfound)
+				{
+					dataBase -> addWord(word);
+				}
+				
 			}
 			else
 			{
 				failedOut << s << endl;
 			}
 		}
-		
+		failedOut <<"yes" << endl;
 	}
+	
 	dataBase -> writeToOStream(ferr);
 
 }
