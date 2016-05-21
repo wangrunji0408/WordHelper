@@ -29,7 +29,20 @@ void DataBaseImpl::writeToOStream (ostream& out) const
 	Json::Value root;
 	for(auto const& pair: stringToWordPtr)
 		root.append( (Json::Value)(*(pair.second)) );
-	out << writer.write(root);
+	out << root;
+}
+
+vector<const WordInfo*> DataBaseImpl::getWordListConst ( function<bool(WordInfo const&)> f ) const
+{
+	vector<const WordInfo*> words;
+	for(auto iter = stringToWordPtr.begin(); iter != stringToWordPtr.end(); iter ++)
+	{
+		if (f(*(iter -> second)))
+		{
+			words.push_back(iter -> second);
+		}
+	}
+	return words;
 }
 
 // 以下作者：赵嘉霖

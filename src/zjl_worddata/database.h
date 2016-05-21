@@ -12,16 +12,20 @@ using std::function;
 using std::istream;
 using std::ostream;
 
+static const auto alwaysTrue = [](WordInfo const&) {return true;};
+
 // 单词数据库接口
 class DataBase
 {
 public:
+	virtual ~DataBase() {}
 	// 从一个输入流构造类
 	virtual void loadFromIStream (istream&) = 0;
 	// 把信息保存到一个输出流
 	virtual void writeToOStream (ostream&) const = 0;
 	// 根据自定的filter函数，返回满足要求的单词列表
-	virtual vector<WordInfo*> getWordList ( function<bool(WordInfo const&)> ) const = 0;
+	virtual vector<WordInfo*> getWordList ( function<bool(WordInfo const&)> = alwaysTrue ) const = 0;
+	virtual vector<const WordInfo*> getWordListConst ( function<bool(WordInfo const&)> = alwaysTrue ) const = 0;
 	// 根据字符串查找单词，要求字符串严格匹配
 	virtual WordInfo* getWord (string const&) const = 0;
 	// 向数据库中加入一个单词
@@ -42,6 +46,7 @@ public:
 	virtual void loadFromIStream (istream&);
 	virtual void writeToOStream (ostream&) const;
 	virtual vector<WordInfo*> getWordList ( function<bool(WordInfo const&)> ) const;
+	virtual vector<const WordInfo*> getWordListConst ( function<bool(WordInfo const&)> ) const;
 	virtual WordInfo* getWord (string const&) const;
 	virtual void addWord (WordInfo*);
 };

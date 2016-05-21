@@ -1,6 +1,7 @@
-TARGET := *.cpp
+NAME := null
+TARGET := word.cpp database.cpp jsoncpp.cpp $(NAME).cpp
 
-all: main
+all: $(NAME)
 
-main: $(TARGET)
-	g++ $(TARGET) -o main -std=c++11
+$(NAME): $(TARGET)
+	g++ $(TARGET) -o $(NAME) -std=c++11

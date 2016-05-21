@@ -21,40 +21,69 @@ string delSpace (string const& s)
 int main ()
 {
 	DataBaseImpl* dataBase = new DataBaseImpl;
-	ifstream ifst("3500word.txt");
-	ofstream ferr("worddata_zjl.txt");
+	ifstream ifst("juniorWord.txt");
+	ifstream fin("worddata_zjl.txt");
 	ofstream failedOut ("failedWord.txt");
+	dataBase -> loadFromIStream(fin);
 	string s;
+	int num = 0;
 	while (getline(ifst, s) && s.size())
 	{
+
 		if (s.size() > 2)
 		{
+
 			WordInfo* word = new WordInfo;
-			int sign = 0;
+			int sign = -1;
 			int signal = 0;
 			int pos = 0;
-			for (int i = 1; i < s.size() - 1; i ++)
+			int start = 0;
+			bool hasfound = false;
+			for (int i = 0; i < s.size() - 1; i ++)
+			{
+				if (s[i] == ' ' && s[i + 1] != ' ')
+				{
+					start = i + 1;
+					sign ++;
+					break;
+				}
+			}
+
+			if (sign == -1)
+			{
+				continue;
+				
+			}
+			for (int i = start; i < s.size() - 1; i ++)
 			{
 				if (s[i] == ' ' && s[i + 1] == '[')
 				{
 					sign ++;
 					signal = i;
+					break;
 				}
 			}
 			if (sign == 1)
 			{
-				word -> word = s.substr(0, signal);
+				word -> word = s.substr(start, signal - start);
+				if (dataBase -> getWord(word -> word ))
+				{
+					word = dataBase -> getWord(word -> word );
+					hasfound = true;
+				}
 			}
 			else 
 			{
 				continue;
 			}
+
 			for (int i = signal; i < s.size() - 1; i ++)
 			{
 				if (s[i] == ']' && s[i + 1] == ' ')
 				{
 					sign ++;
 					pos = i;
+					break;
 				}
 			}
 			if (sign == 2)
@@ -65,17 +94,19 @@ int main ()
 			{
 				continue;
 			}
+
 			signal = 0;
 			string part;
 			while (pos < s.size())
 			{
+				
 				if (signal == 0)
 				{
-					for (int i = 0; i < 9 ; i ++)
+					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{
-							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i] && s[pos + WORD_PART_OF_SPEECH[i].size()] == '.')
+							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i])
 							{
 								part = WORD_PART_OF_SPEECH[i];
 								signal = pos + WORD_PART_OF_SPEECH[i].size();
@@ -87,18 +118,30 @@ int main ()
 				}
 				else
 				{
-					for (int i = 0; i < 9 ; i ++)
+					for (int i = 0; i < sizeof(WORD_PART_OF_SPEECH) / sizeof(WORD_PART_OF_SPEECH[0]); i ++)
 					{
 						if (s.size() - pos > WORD_PART_OF_SPEECH[i].size())
 						{
-							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i] && s[pos + WORD_PART_OF_SPEECH[i].size()] == '.')
+							if (s.substr(pos, WORD_PART_OF_SPEECH[i].size()) == WORD_PART_OF_SPEECH[i])
 							{
 								if (part.size() != 0)
 								{
 									Meaning* meaning = new Meaning;
 									meaning -> partOfSpeech = part;
 									meaning -> explain = s.substr(signal + 1, pos - signal - 1);
-									word -> meaningList.push_back(*meaning);
+									bool has = false;
+									for (auto mean : word -> meaningList)
+									{
+										if (mean.partOfSpeech == meaning -> partOfSpeech && mean.explain == meaning -> explain)
+										{
+											has = true;
+										}
+									}
+									if (!has)
+									{
+										word -> meaningList.push_back(*meaning);
+									}
+									
 								}
 								part = WORD_PART_OF_SPEECH[i];
 								signal = pos + WORD_PART_OF_SPEECH[i].size();
@@ -113,7 +156,18 @@ int main ()
 							Meaning* meaning = new Meaning;
 							meaning -> partOfSpeech = part;
 							meaning -> explain = s.substr(signal + 1, pos - signal);
-							word -> meaningList.push_back(*meaning);
+							bool has = false;
+							for (auto mean : word -> meaningList)
+							{
+								if (mean.partOfSpeech == meaning -> partOfSpeech && mean.explain == meaning -> explain)
+								{
+									has = true;
+								}
+							}
+							if (!has)
+							{
+								word -> meaningList.push_back(*meaning);
+							}
 						}
 					}
 					if (s[pos] == ',' || s[pos] == ';')
@@ -123,7 +177,18 @@ int main ()
 							Meaning* meaning = new Meaning;
 							meaning -> partOfSpeech = part;
 							meaning -> explain = s.substr(signal + 1, pos - signal - 1);
-							word -> meaningList.push_back(*meaning);
+							bool has = false;
+							for (auto mean : word -> meaningList)
+							{
+								if (mean.partOfSpeech == meaning -> partOfSpeech && mean.explain == meaning -> explain)
+								{
+									has = true;
+								}
+							}
+							if (!has)
+							{
+								word -> meaningList.push_back(*meaning);
+							}
 							signal = pos;
 						}
 					}
@@ -135,16 +200,38 @@ int main ()
 				word->word = delSpace(word->word);
 				for(auto& meaning: word->meaningList)
 					meaning.explain = delSpace(meaning.explain);
-				word->tagList.push_back("3500");
-				dataBase -> addWord(word);
+				bool has = false;
+				for (int i = 0; i < word -> tagList.size(); i ++)
+				{
+					if (word -> tagList[i] == WORD_TAG[0])
+					{
+						has = true;
+					}
+				}
+				if (!has)
+				{
+					word->tagList.push_back(WORD_TAG[0]);
+				}
+				
+				if (!hasfound)
+				{
+					dataBase -> addWord(word);
+				}
+				
 			}
 			else
 			{
 				failedOut << s << endl;
 			}
+
+		}
+		else
+		{
+
 		}
 		
 	}
-	dataBase -> writeToOStream(ferr);
-
+	fin.close();
+	ofstream fout("worddata_zjl.txt");
+	dataBase -> writeToOStream(fout);
 }
