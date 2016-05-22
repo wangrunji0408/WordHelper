@@ -1,25 +1,61 @@
-SOURCES := $(wildcard *.cpp kernel/*.cpp shell/*.cpp)
-OBJECTS := $(patsubst %.cpp, %.o, $(SOURCES))
+OS_NAME = $(shell uname)
 
-DSO_POSTFIX := .dylib
+ifeq ($(OS_NAME), Linux)
+	# Linux
+	DSO_POSTFIX = .so
+	LS = ls
+	RM = rm
+	SLASH = /
+else
+
+ifeq ($(OS_NAME), Darwin)
+	# Mac
+	DSO_POSTFIX = .dylib
+	LS = ls
+	RM = rm
+	SLASH = /
+else
+	# Windows
+	OS_NAME = Windows
+	DSO_POSTFIX = .dll
+	LS = dir /b
+	RM = del
+	SLASH = \\
+endif
+
+endif
 
 CPP_FLAGS := -std=c++11 
 
+WORD_SRC := $(shell $(LS) word$(SLASH)*.cpp)
+WORD_OBJ := $(patsubst %.cpp, %.o, $(WORD_SRC))
+KERNEL_SRC := $(shell $(LS) kernel$(SLASH)*.cpp)
+KERNEL_OBJ := $(patsubst %.cpp, %.o, $(KERNEL_SRC))
+SHELL_SRC := $(shell $(LS) shell$(SLASH)*.cpp)
+SHELL_OBJ := $(patsubst %.cpp, %.o, $(SHELL_SRC))
+
+LIB_WORD := word$(SLASH)libword$(DSO_POSTFIX)
+LIB_KERNEL := kernel$(SLASH)libkernel$(DSO_POSTFIX)
+LIB_SHELL := shell$(SLASH)libshell$(DSO_POSTFIX)
+LIB := $(LIB_WORD) $(LIB_KERNEL) $(LIB_SHELL)
+
 all: main 
 
-.PHONY: main
-main: $(OBJECTS) libword$(DSO_POSTFIX)
-	g++ $(CPP_FLAGS) $(OBJECTS) libword$(DSO_POSTFIX) -o main
+main: $(LIB) main.o
+	g++ $(CPP_FLAGS) -o $@ $(LIB) main.o
 
-WORD_SRC := $(wildcard word/*.cpp)
-WORD_OBJ := $(patsubst %.cpp, %.o, $(WORD_SRC))
+$(LIB_SHELL): $(SHELL_OBJ) $(LIB_KERNEL) $(LIB_WORD)
+	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $(SHELL_OBJ) $(LIB_KERNEL) $(LIB_WORD)
 
-libword$(DSO_POSTFIX): $(WORD_OBJ)
-	g++ $(CPP_FLAGS) $(WORD_OBJ) -fPIC -shared -o libword$(DSO_POSTFIX)
+$(LIB_KERNEL): $(KERNEL_OBJ) $(LIB_WORD) 
+	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $(KERNEL_OBJ) $(LIB_WORD)
+
+$(LIB_WORD): $(WORD_OBJ)
+	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $^ 
 
 %.o: %.cpp
 	g++ $(CPP_FLAGS) -o $@ -c $<
 	
 .PHONY: clean
 clean:
-	rm *.o kernel/*.o shell/*.o word/*.o *$(DSO_POSTFIX)
+	$(RM) $(shell $(LS) *.o kernel$(SLASH)*.o shell$(SLASH)*.o word$(SLASH)*.o) $(LIB)
