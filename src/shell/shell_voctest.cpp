@@ -40,8 +40,9 @@ void Shell::Test_SpellMode (int size) const
 		{
 			out << "wrong ×" << endl;
 		}
-		printWordFull(word);
-		spell -> goNext();
+		//printWordFull(word);
+		test_word_manage(word, spell);
+		//spell -> goNext();
 	}
 	out << "Test end." << endl;
 }
