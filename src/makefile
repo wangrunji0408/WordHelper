@@ -25,7 +25,7 @@ endif
 
 endif
 
-CPP_FLAGS := -std=c++11 
+CPP_FLAGS := -std=c++11 -fPIC 
 
 WORD_SRC := $(shell $(LS) word$(SLASH)*.cpp)
 WORD_OBJ := $(patsubst %.cpp, %.o, $(WORD_SRC))
@@ -41,17 +41,17 @@ LIB := $(LIB_WORD) $(LIB_KERNEL) $(LIB_SHELL)
 
 all: main 
 
-main: $(LIB) main.o
-	g++ $(CPP_FLAGS) -o $@ $(LIB) main.o
+main: main.o $(LIB)
+	g++ $(CPP_FLAGS) -o $@ $^
 
 $(LIB_SHELL): $(SHELL_OBJ) $(LIB_KERNEL) $(LIB_WORD)
-	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $(SHELL_OBJ) $(LIB_KERNEL) $(LIB_WORD)
+	g++ $(CPP_FLAGS) -o $@ -shared $^
 
 $(LIB_KERNEL): $(KERNEL_OBJ) $(LIB_WORD) 
-	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $(KERNEL_OBJ) $(LIB_WORD)
+	g++ $(CPP_FLAGS) -o $@ -shared $^
 
 $(LIB_WORD): $(WORD_OBJ)
-	g++ $(CPP_FLAGS) -o $@ -fPIC -shared $^ 
+	g++ $(CPP_FLAGS) -o $@ -shared $^ 
 
 %.o: %.cpp
 	g++ $(CPP_FLAGS) -o $@ -c $<
