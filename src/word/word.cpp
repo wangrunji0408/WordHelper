@@ -1,5 +1,6 @@
 #include "word.h"
 #include <cctype>
+#include <algorithm>
 
 // 作者：王润基
 
