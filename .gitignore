@@ -1,0 +1,17 @@
+.DS_Store
+
+# other files
+*.o
+
+*.so
+*.dylib
+*.dll
+
+*.exe
+
+#
+
+src/main
+src/zjl_worddata/DataBaseInit
+src/zjl_worddata/WordParse_*
+!src/zjl_worddata/WordParse_*.cpp
