@@ -11,13 +11,14 @@ void Shell::Test_SpellMode (int size) const
 	clearScreen();
 	out << "Test start. (Spell Mode)" << endl;
 	TestKernel_SpellMode* spell = kernel -> getNewSpellTestKernel (size);
+	bool isEnd = false;
 	for(int order = 1; !spell -> isEnd(); ++order)
 	{
 		std::stringstream stm;
 		stm << order << '/' << spell->getSize();
 		printTitle(stm.str());
 
-		const WordInfo* word = spell -> getWordInfoPtr();
+		WordInfo* const word = spell -> getWordInfoPtr();
 		for(int i = 0; i < word -> meaningList.size(); i ++) // 输出中文解释
 		{
 			if (i != 0)
