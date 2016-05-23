@@ -24,3 +24,9 @@ void Config::save (std::ostream& out) const
 	json["defaultTestModeName"] = defaultTestModeName;
 	out << json;
 }
+
+Config::Config (std::string const& userName):
+	Config()
+{
+	userWordFileName = "user_data/" + userName + "/user_word.txt";
+}

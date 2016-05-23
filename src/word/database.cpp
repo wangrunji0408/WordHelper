@@ -34,9 +34,13 @@ void DataBaseImpl::saveUserInfo (ostream& out) const
 	Json::Value root;
 	for(auto const& pair: stringToWordPtr)
 	{
-		WordUserInfo const& userInfo = *pair.second;
+		WordDictInfo const& dictInfo = *pair.second;
+		WordUserInfo & userInfo = *pair.second;
 		if(!userInfo.empty())
+		{
+			userInfo.userWord = dictInfo.word;
 			root.append( (Json::Value)userInfo );
+		}
 	}
 	out << root;
 }

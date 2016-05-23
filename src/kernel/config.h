@@ -15,6 +15,8 @@ struct Config
 
 	void load (std::istream&);
 	void save (std::ostream&) const;
+	Config () = default;
+	Config (std::string const& userName);
 };
 
 #endif //_CONFIG_H

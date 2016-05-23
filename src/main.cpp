@@ -6,20 +6,27 @@
 #include "shell/shell.h"
 
 using namespace std;
-/*
-void dataBaseLoadTest ()
-{
-	ifstream fin("word.json");
-	ofstream fout("word_test.json");
-	DataBase* dataBase = new DataBaseImpl;
-	dataBase->loadDictInfo(fin);
-	dataBase->saveDictInfo(fout);
-}
-*/
 
 int main ()
 {
 	Kernel kernel;
-	Shell shell(&kernel, cin, cout);
-	shell.run();
+	while(true)
+	{
+		string userName;
+		cout << "Please enter user name. \"admin\" as default. Enter \"exit\" to exit." << endl;
+		cout << "User Name: ";
+		std::getline(cin, userName);
+		if(userName == "exit")
+			return 0;
+		if(userName == "")
+		{
+			userName = "admin";
+			cout << "Login defalut user: " << userName << endl;
+		}
+		kernel.login(userName);
+		Shell shell(&kernel, cin, cout);
+		shell.run();
+		kernel.logout();
+	}
+	
 }

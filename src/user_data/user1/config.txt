@@ -1,7 +1,7 @@
 {
 	"defaultTestModeName" : "recall",
-	"defaultTestSize" : 10,
+	"defaultTestSize" : 1,
 	"dictFileName" : "dictionary.txt",
-	"userWordFileName" : "user_data/admin/user_word.txt",
+	"userWordFileName" : "user_data/user1/user_word.txt",
 	"wordSelectStrategyId" : 0
 }

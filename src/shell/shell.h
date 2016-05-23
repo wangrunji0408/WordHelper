@@ -30,7 +30,7 @@ protected:
 	void Test_SpellMode (int size) const;
 	void Test_RecallMode (int size) const;
 	void Test_ChoiceMode (int size, bool choiceEnglish) const;
-	bool Test (string const& modeName) const;			// 返回是否成功
+	bool Test (string const& modeName, int size) const;			// 返回是否成功
 	// 文本分析
 	void textAnalyze (string const& fileName) const;
 	// 查询单词（自动检测中文/英文）

@@ -1,1 +1,56 @@
-null
+[
+	{
+		"lasttime" : 1464010936,
+		"level" : 1,
+		"note" : 
+		[
+			"note example."
+		],
+		"word" : "AIDS"
+	},
+	{
+		"lasttime" : 1464010937,
+		"level" : 1,
+		"word" : "Africa"
+	},
+	{
+		"lasttime" : 1464010938,
+		"level" : 1,
+		"word" : "African"
+	},
+	{
+		"lasttime" : 1464010938,
+		"level" : 1,
+		"word" : "America"
+	},
+	{
+		"lasttime" : 1464010938,
+		"level" : 1,
+		"word" : "American"
+	},
+	{
+		"lasttime" : 1464010938,
+		"level" : 1,
+		"word" : "Antarctic"
+	},
+	{
+		"lasttime" : 1464010939,
+		"level" : 1,
+		"word" : "Antarctica"
+	},
+	{
+		"lasttime" : 1464010939,
+		"level" : 1,
+		"word" : "April"
+	},
+	{
+		"lasttime" : 1464010940,
+		"level" : 1,
+		"word" : "Arab"
+	},
+	{
+		"lasttime" : 1464010940,
+		"level" : 1,
+		"word" : "Arabic"
+	}
+]

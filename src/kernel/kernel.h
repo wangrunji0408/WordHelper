@@ -24,7 +24,7 @@ protected:
 	vector<string> const TEST_MODE_NAME = {"recall", "spell", "choiceE", "choiceC"};
 protected:
 	// 全局参数
-	string userName = "admin";
+	string userName;
 	string version = "0.95";
     Config config;
 	
@@ -40,8 +40,6 @@ protected:
 	void saveDictionary ();
 	void loadUserWord ();
 	void saveUserWord ();
-	void login (string const& userName);
-	void logout ();
 	void printLog (string const&) const;
 	// 获取当前选词策略
 	WordSelectStrategy* getWordSelectStrategy() const;
@@ -50,7 +48,10 @@ public:
 	Kernel();
 	// 通知dataBase保存数据到文件 析构 dataBase wordSelectStrategy
 	~Kernel ();
+	void login (string const& userName);
+	void logout ();
 	// 参数的获取与修改
+	string 	getUserName () const;
 	string 	getVersion () const;
 	int 	getDefaultTestSize () const;
 	void 	setDefaultTestSize (int v);
@@ -67,11 +68,12 @@ public:
 	TestKernel_ChoiceMode* 	getNewChoiceTestKernel (int size, bool choiceEnglish) const;	// ...
 	// 返回搜索历史
 	vector<string> 			getSearchHistory (int size) const;
-	// 模糊搜索(英文/中文)
-	vector<const WordInfo*> fuzzySearchByEnglish (string const&);
-	vector<const WordInfo*> fuzzySearchByChinese (string const&);
-	// 严格搜索(英文)
-	const WordInfo* 		strictSearchByEnglish (string const&);
+	// 单词搜索，默认不加log参数表示记录搜索内容
+	//   模糊搜索(英文/中文)
+	vector<const WordInfo*> fuzzySearchByEnglish (string const&, bool log = true);
+	vector<const WordInfo*> fuzzySearchByChinese (string const&, bool log = true);
+	//   严格搜索(英文)
+	const WordInfo* 		strictSearchByEnglish (string const&, bool log = true);
 };
 
 #endif
