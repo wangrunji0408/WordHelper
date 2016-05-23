@@ -6,15 +6,16 @@
 #include "shell/shell.h"
 
 using namespace std;
-
+/*
 void dataBaseLoadTest ()
 {
 	ifstream fin("word.json");
 	ofstream fout("word_test.json");
 	DataBase* dataBase = new DataBaseImpl;
-	dataBase->loadFromIStream(fin);
-	dataBase->writeToOStream(fout);
+	dataBase->loadDictInfo(fin);
+	dataBase->saveDictInfo(fout);
 }
+*/
 
 int main ()
 {

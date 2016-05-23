@@ -29,6 +29,7 @@ protected:
 	int wordSelectStrategyId;
 	string defaultTestModeName;
 	string version = "0.9";
+	//string userName;
 	// 重要成员
 	DataBase* 						dataBase;
 	vector<WordSelectStrategy*> 	wordSelectStrategyList;	// 在构造时new出所有策略，此后为常量，在析构时依次delete
@@ -38,8 +39,8 @@ protected:
 	void setConfigDefault ();
 	void loadConfig ();
 	void writeConfig();
-	void loadWordData ();
-	void writeWordData ();
+	void loadDictionary ();
+	void saveDictionary ();
 	void printLog (string const&) const;
 	// 获取当前选词策略
 	WordSelectStrategy* getWordSelectStrategy() const;

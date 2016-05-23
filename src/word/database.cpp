@@ -8,7 +8,45 @@ DataBaseImpl::~DataBaseImpl ()
 		delete pair.second;
 }
 
-void DataBaseImpl::loadFromIStream (istream& in)
+void DataBaseImpl::loadUserInfo (istream& in)
+{
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(in, root);
+
+	clearUserInfo();
+
+	int const wordSize = root.size();
+	for(int i = 0; i < wordSize; ++i)
+	{
+		string const wordString = root[i]["word"].asString();
+		if(stringToWordPtr[wordString] == nullptr)
+			std::cerr << "DataBase: No this word in dictionary: " << wordString << std::endl;
+		else
+		{
+			WordUserInfo& userInfo = *stringToWordPtr[wordString];
+			userInfo = WordUserInfo(root[i]);
+		}
+	}
+}
+void DataBaseImpl::saveUserInfo (ostream& out) const
+{
+	Json::Value root;
+	for(auto const& pair: stringToWordPtr)
+	{
+		WordUserInfo const& userInfo = *pair.second;
+		if(!userInfo.empty())
+			root.append( (Json::Value)userInfo );
+	}
+	out << root;
+}
+void DataBaseImpl::clearUserInfo ()
+{
+	for(auto const& pair: stringToWordPtr)
+		pair.second->clearUserInfo();
+}
+
+void DataBaseImpl::loadDictInfo (istream& in)
 {
 	Json::Reader reader;
 	Json::Value root;
@@ -19,17 +57,17 @@ void DataBaseImpl::loadFromIStream (istream& in)
 	int const wordSize = root.size();
 	for(int i = 0; i < wordSize; ++i)
 	{
-		WordInfo* ptr = new WordInfo(root[i]);
+		WordInfo* ptr = new WordInfo( WordDictInfo(root[i]), WordUserInfo() );
 		stringToWordPtr[ptr->word] = ptr;
 	}
 }
-void DataBaseImpl::writeToOStream (ostream& out) const
+void DataBaseImpl::saveDictInfo (ostream& out) const
 {
-	Json::FastWriter writer;
+	//Json::FastWriter writer;
 	Json::Value root;
 	for(auto const& pair: stringToWordPtr)
-		root.append( (Json::Value)(*(pair.second)) );
-	out << writer.write(root);
+		root.append( (Json::Value)(WordDictInfo const&)(*(pair.second)) );
+	out << root;
 }
 
 vector<const WordInfo*> DataBaseImpl::getWordListConst ( function<bool(WordInfo const&)> f ) const

@@ -123,7 +123,8 @@ void Shell::printWordFull (const WordInfo* word) const
 }
 void Shell::printWordInJson (const WordInfo* word) const
 {
-	out << (Json::Value)*word;
+	out << (Json::Value)* static_cast<const WordDictInfo*>(word)
+		<< (Json::Value)* static_cast<const WordUserInfo*>(word);
 }
 
 void Shell::searchWord (string const& str) const

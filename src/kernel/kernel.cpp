@@ -9,7 +9,7 @@ Kernel::Kernel ()
 {
 	dataBase = new DataBaseImpl;
 	loadConfig();
-	loadWordData();
+	loadDictionary();
 	wordSelectStrategyList.push_back(new WordSelectStrategy_Random(dataBase));
 	/*
 	auto wordList = dataBase->getWordList([](const WordInfo&){return true;});
@@ -19,7 +19,7 @@ Kernel::Kernel ()
 }
 Kernel::~Kernel ()
 {
-	writeWordData();
+	//saveDictionary();
 	writeConfig();
 	for(auto strategy: wordSelectStrategyList)
 		delete strategy;
@@ -33,7 +33,7 @@ void Kernel::printLog (string const& str) const
 void Kernel::setConfigDefault ()
 {
 	defaultTestSize = 50;
-	dataFileName = "worddata.txt";
+	dataFileName = "dictionary.txt";
 	wordSelectStrategyId = 0;
 	defaultTestModeName = "recall";
 }
@@ -75,29 +75,29 @@ void Kernel::writeConfig()
 
 	printLog("Success to save config.");
 }
-void Kernel::loadWordData ()
+void Kernel::loadDictionary ()
 {
 	std::ifstream wordFileIn(dataFileName);
 	if(!wordFileIn.is_open())
 	{
-		string errorString = "Failed to open word data file: " + dataFileName;
+		string errorString = "Failed to open dictionary file: " + dataFileName;
 		printLog(errorString);
 		throw std::runtime_error(errorString);
 	}
-	dataBase->loadFromIStream(wordFileIn);
-	printLog("Success to load word data.");
+	dataBase->loadDictInfo(wordFileIn);
+	printLog("Success to load dictionary.");
 }
-void Kernel::writeWordData ()
+void Kernel::saveDictionary ()
 {
 	std::ofstream wordFileOut(dataFileName);
 	if(!wordFileOut.is_open())
 	{
-		string errorString = "Failed to open word data file: " + dataFileName;
+		string errorString = "Failed to open dictionary file: " + dataFileName;
 		printLog(errorString);
 		throw std::runtime_error(errorString);
 	}
-	dataBase->writeToOStream(wordFileOut);
-	printLog("Success to save word data.");
+	dataBase->saveDictInfo(wordFileOut);
+	printLog("Success to save dictionary.");
 }
 
 string Kernel::getVersion () const
