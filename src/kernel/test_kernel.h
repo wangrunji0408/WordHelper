@@ -14,7 +14,7 @@ protected:
 public:
 	TestKernel (DataBase*, WordSelectStrategy*, int _wordNum);
 	int getSize () const;
-	const WordInfo* getWordInfoPtr () const;
+	WordInfo* const getWordInfoPtr () const;
 	void goNext ();
 	bool isEnd () const;
 };

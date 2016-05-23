@@ -1,51 +1,66 @@
 #include "shell.h"
 #include "sstream"
 
-void Shell::test_word_manage(const WordInfo* word, const TestKernel_SpellMode* spell) {
-	printLn("------------------What to do next------------------");
-	printLn("cont: Continue");
-	printLn("answer: Show the correst answer.")
-	printLn("show: Show the detail information about this word");
-	printLn("manage: Enter into word manage interface");
-	printLn("ign: Do not want to have this word tested anymore")
-	printLn("exit: Exit");
-	string command;
-	auto parserCommand = [] (string const& command) -> bool {
+void Shell::test_word_manage(WordInfo* const word, const TestKernel* spell, bool& isEnd) const {
+	clearScreen();
+	printTitle("What to do next");
+	printLn("[c]: Continue");
+	printLn("[a]: Show the correst answer.");
+	printLn("[s]: Show the detail information about this word");
+	printLn("[m]: Enter into word manage interface");
+	printLn("[i]: Do not want to have this word tested anymore");
+	printLn("[h]: Get help information");
+	printLn("[e]: Exit");
+	auto parserCommand = [&] (string const& _command) -> bool {
 		string cmd;
 		std::stringstream stm;
-		command >> stm;
+		stm << _command;
 		stm >> cmd; //如果不这样会怎么样
-		if(cmd == "cont") {
-			spell -> goNext();
-			return false
+		if(cmd == "c") {
+			return false;
 		}
-
-		if(cmd == "answer") {
-			out << WordInfo -> word << endl;  //暂时只使用一种mode
-			return true；
-		}
-		if(cmd == "show") {
-			printWordSimple(word);
+		if(cmd == "a") {
+			printWordSimple(word);  
+			out << endl;
 			return true;
 		}
-		if(cmd == "manage") {
+		if(cmd == "s") {
+			printWordFull(word);
+			out << endl;
+			return true;
+		}
+		if(cmd == "m") {
 			wordManage(word);
 			return true;
 		}
-		if(cmd == "ign") {
+		if(cmd == "i") {
 			word -> rememberLevel = 7;
 			return true;
 		}
-		if(cmd == "exit") {
-			//退出
+		if(cmd == "e") {
+			isEnd = true; 
+			return false;
+		}
+		if(cmd == "h") {
+			printLn("[c]: Continue");
+			printLn("[a]: Show the correst answer.");
+			printLn("[s]: Show the detail information about this word");
+			printLn("[m]: Enter into word manage interface");
+			printLn("[i]: Do not want to have this word tested anymore");
+			printLn("[h]: Get help information");
+			printLn("[e]: Exit");
+			return true;
 		}
 		else {
 			printError("Invalid command");
+			return true;
 		}
-	}
+	};
+	string command;
 	do {
-		out << "$" << endl;
-		std::getline(in, command);
+		out << "$";
+		//std::getline(in, command);
+		in >> command;
 	}
 	while(parserCommand(command));
 }

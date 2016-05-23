@@ -51,7 +51,7 @@ protected:
 	// 解析命令字符串并调用相应功能函数，若命令为exit返回false，否则返回true
 	bool parseCommand (string const&);
 	bool parseCommandInWordKernel(string const& command, WordKernel* word_kernel, const WordInfo* word) const;
-	void test_word_manage(const WordInfo*, const TestKernel_SpellMode*);
+	void test_word_manage(WordInfo* const, const TestKernel*, bool&)const;
 public:
 	using Shell_Base::Shell_Base;
 	void run ();

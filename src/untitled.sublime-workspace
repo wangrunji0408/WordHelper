@@ -1,0 +1,304 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"b",
+				"b"
+			],
+			[
+				"a",
+				"auto"
+			],
+			[
+				"_",
+				"_word_info"
+			],
+			[
+				"word",
+				"word_info"
+			],
+			[
+				"wo",
+				"word_info"
+			],
+			[
+				"pr",
+				"printWordFull"
+			],
+			[
+				"Word",
+				"WordInfo"
+			],
+			[
+				"meaning",
+				"meaningId"
+			],
+			[
+				"me",
+				"meaningList"
+			],
+			[
+				"sen",
+				"sentenceId"
+			],
+			[
+				"mea",
+				"meaningId"
+			],
+			[
+				"note",
+				"noteId"
+			],
+			[
+				"del",
+				"delSentence"
+			],
+			[
+				"Print",
+				"printLn"
+			],
+			[
+				"add",
+				"addMeaning"
+			],
+			[
+				"tag",
+				"tag"
+			],
+			[
+				"print",
+				"printLn"
+			],
+			[
+				"vec",
+				"vec_for_compare"
+			],
+			[
+				"pair",
+				"pair_vec"
+			],
+			[
+				"tex",
+				"text_analyze_kernel"
+			],
+			[
+				"TextA",
+				"TextAnalyzeKernelImpl"
+			],
+			[
+				"In",
+				"InDataBaseWordList"
+			],
+			[
+				"IndataBase",
+				"getInDataBaseWordList"
+			],
+			[
+				"text",
+				"textWord"
+			],
+			[
+				"w",
+				"wordNumber"
+			],
+			[
+				"te",
+				"textPosition"
+			],
+			[
+				"ta",
+				"tagList"
+			],
+			[
+				"meaningId",
+				"meaningId"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"backg",
+				"background-color"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Makefile/Make.sublime-build",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"ssc+",
+				"Set Syntax: C++"
+			]
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/kernel/word_select_strategy.h",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/shell/shell_textanalyze.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/kernel/word_select_strategy.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/word/database.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/word/word.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/kernel/word_kernel.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper/src/kernel/test_kernel.h",
+		"/Users/pengbinghui/Desktop/sketch_may21a/motion.h",
+		"/Users/pengbinghui/Desktop/sketch_may21a/light.h",
+		"/Users/pengbinghui/Desktop/ledremote.cpp",
+		"/Users/pengbinghui/Desktop/1.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/word_kernel.h",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/shell_voctest.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/shell.h",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/word.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/database.h",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/main.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/makefile",
+		"/Users/pengbinghui/Desktop/text_analyze_shell_test.cpp",
+		"/Users/pengbinghui/Desktop/a.cpp",
+		"/Users/pengbinghui/Library/Application Support/Sublime Text 2/Packages/User/c++11.sublime-build",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper+0/database.cpp",
+		"/Users/pengbinghui/Desktop/text_analyze_shell_test",
+		"/Users/pengbinghui/Desktop/untitled.cpp",
+		"/Users/pengbinghui/Desktop/enwan.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper 0.03/word.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper 0.03/word_select_strategy.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper 0.03/test_kernel.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper 0.03/kernel.cpp",
+		"/Users/pengbinghui/Desktop/学习/课程/2016春季学期/面向对象的程序设计/大作业/WordHelper 0.03/database.cpp",
+		"/Users/pengbinghui/Desktop/func",
+		"/Users/pengbinghui/Desktop/fun.h",
+		"/Users/pengbinghui/Desktop/main",
+		"/Users/pengbinghui/Desktop/学习/课程/程序设计基础/第三次作业/文件加密/plainText.txt"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"  ",
+			"42962",
+			"课外阅读资料",
+			"42965",
+			"file",
+			"iterator::",
+			"iterator",
+			","
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"    ",
+			" "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 131.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}

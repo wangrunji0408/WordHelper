@@ -42,8 +42,13 @@ void Shell::Test_SpellMode (int size) const
 			out << "wrong ×" << endl;
 		}
 		//printWordFull(word);
-		test_word_manage(word, spell);
-		//spell -> goNext();
+		test_word_manage(word, spell, isEnd);
+		if(isEnd) {
+			break;
+		}
+		else {
+			spell -> goNext();
+		}
 	}
 	out << "Test end." << endl;
 }
@@ -54,6 +59,7 @@ void Shell::Test_RecallMode (int size) const
 		size = kernel->getDefaultTestSize();
 	clearScreen();
 	out << "Test start. (Recall Mode)" << endl;
+	bool isEnd = false;
 	TestKernel_RecallMode* recall = kernel -> getNewRecallTestKernel (size);
 	for(int order = 1; !recall -> isEnd(); ++order)
 	{
@@ -61,7 +67,7 @@ void Shell::Test_RecallMode (int size) const
 		stm << order << '/' << recall->getSize();
 		printTitle(stm.str());
 
-		const WordInfo* word = recall -> getWordInfoPtr();
+		WordInfo* const word = recall -> getWordInfoPtr();
 		out << recall -> getWordString() << endl;
 		string choice;
 		while(true)
@@ -83,8 +89,14 @@ void Shell::Test_RecallMode (int size) const
 				printError("Invaild input.");
 			}
 		}
-		printWordFull(word);
-		recall -> goNext();
+		//printWordFull(word);
+		test_word_manage(word, recall, isEnd);
+		if(isEnd) {
+			break;
+		}
+		else {
+			recall -> goNext();
+		}
 	}
 	out << "Test end." << endl;
 }
@@ -121,6 +133,7 @@ void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 	else
 		out << "Test start. (Choice Chinese Mode)" << endl;
 
+	bool isEnd = false;
 	for(int order = 1; !testKernel -> isEnd(); ++order)
 	{
 		std::stringstream stm;
@@ -140,8 +153,14 @@ void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 		else
 			out << "wrong ×" << "  Answer: " << (char)('A' + testKernel->getAnswerId()) << endl;
 		out << endl;
-		printWordFull(testKernel -> getWordInfoPtr());
-		testKernel -> goNext();
+		//printWordFull(testKernel -> getWordInfoPtr());
+		test_word_manage(testKernel -> getWordInfoPtr(), testKernel, isEnd);
+		if(isEnd) {
+			break;
+		}
+		else{
+			testKernel -> goNext();
+		}
 	}
 	out << "Test end." << endl;
 }
