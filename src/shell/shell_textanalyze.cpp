@@ -6,8 +6,9 @@
 
 void Shell::textAnalyze (string const& fileName) const {
 	std::ifstream input_text(fileName);
-	string _text;
-	std::getline(input_text, _text, '\0');
+	string _text((std::istreambuf_iterator<char>(input_text)), std::istreambuf_iterator<char>());
+	//std::getline(input_text, _text, '\0');
+
 	TextAnalyzeKernel* text_analyze_kernel = kernel -> getNewTextAnalyzeKernel ();
 	text_analyze_kernel -> loadText(_text);
 
