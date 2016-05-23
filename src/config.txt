@@ -1,6 +1,0 @@
-{
-	"dataFileName" : "dictionary.txt",
-	"defaultTestModeName" : "recall",
-	"defaultTestSize" : 10,
-	"wordSelectStrategyId" : 0
-}

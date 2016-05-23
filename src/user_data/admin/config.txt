@@ -1,0 +1,7 @@
+{
+	"defaultTestModeName" : "",
+	"defaultTestSize" : 0,
+	"dictFileName" : "dictionary.txt",
+	"userWordFileName" : "user_data/admin/user_word.txt",
+	"wordSelectStrategyId" : 0
+}

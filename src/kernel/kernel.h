@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 
+#include "config.h"
 #include "../word/database.h"
 #include "test_kernel.h"
 #include "word_kernel.h"
@@ -23,24 +24,24 @@ protected:
 	vector<string> const TEST_MODE_NAME = {"recall", "spell", "choiceE", "choiceC"};
 protected:
 	// 全局参数
-    string configFileName = "config.txt";	// 只有这个变量从这里初始化
-	int defaultTestSize;					// 其它的都从config文件中读取
-	string dataFileName;
-	int wordSelectStrategyId;
-	string defaultTestModeName;
-	string version = "0.9";
-	//string userName;
+	string userName = "admin";
+	string version = "0.95";
+    Config config;
+	
 	// 重要成员
 	DataBase* 						dataBase;
 	vector<WordSelectStrategy*> 	wordSelectStrategyList;	// 在构造时new出所有策略，此后为常量，在析构时依次delete
 	vector<string> 					searchHistoryList;
 protected:
 	// 读写
-	void setConfigDefault ();
 	void loadConfig ();
-	void writeConfig();
+	void saveConfig();
 	void loadDictionary ();
 	void saveDictionary ();
+	void loadUserWord ();
+	void saveUserWord ();
+	void login (string const& userName);
+	void logout ();
 	void printLog (string const&) const;
 	// 获取当前选词策略
 	WordSelectStrategy* getWordSelectStrategy() const;
@@ -55,8 +56,6 @@ public:
 	void 	setDefaultTestSize (int v);
 	string 	getDataFileName () const;
 	void 	setDataFileName (string const&);
-	string 	getConfigFileName () const;
-	void 	setConfigFileName (string const&);
 	vector<string> getTestModeList () const;
 	string 	getDefaultTestMode () const;
 	void 	setDefaultTestMode (string const& testModeName);

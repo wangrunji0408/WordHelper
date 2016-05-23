@@ -5,11 +5,18 @@
 #include <algorithm>	// min
 #include <fstream>
 
+#ifdef _WIN32
+#define SLASH "\\"
+#else
+#define SLASH "/"
+#endif
+
 Kernel::Kernel ()
 {
 	dataBase = new DataBaseImpl;
 	loadConfig();
 	loadDictionary();
+	loadUserWord();
 	wordSelectStrategyList.push_back(new WordSelectStrategy_Random(dataBase));
 	/*
 	auto wordList = dataBase->getWordList([](const WordInfo&){return true;});
@@ -19,8 +26,8 @@ Kernel::Kernel ()
 }
 Kernel::~Kernel ()
 {
-	//saveDictionary();
-	writeConfig();
+	saveUserWord();
+	saveConfig();
 	for(auto strategy: wordSelectStrategyList)
 		delete strategy;
 	delete dataBase;
@@ -30,57 +37,36 @@ void Kernel::printLog (string const& str) const
 {
 	std::clog << "Kernel: " << str << endl;
 }
-void Kernel::setConfigDefault ()
-{
-	defaultTestSize = 50;
-	dataFileName = "dictionary.txt";
-	wordSelectStrategyId = 0;
-	defaultTestModeName = "recall";
-}
 void Kernel::loadConfig ()
 {
+	string configFileName = (string)"user_data" + SLASH + userName + SLASH + "config.txt";
 	std::ifstream configFileIn(configFileName);
 	if(!configFileIn.is_open())
 	{
-		printLog("Failed to open config file. Use default settings.");
-		setConfigDefault();
-		return;
+		printLog("Failed to open config file.");
+		throw std::runtime_error("Failed to open config file.");
 	}
-	Json::Reader reader;
-	Json::Value json;
-	reader.parse(configFileIn, json);
-
-	defaultTestSize = json["defaultTestSize"].asInt();
-	dataFileName = json["dataFileName"].asString();
-	wordSelectStrategyId = json["wordSelectStrategyId"].asInt();
-	defaultTestModeName = json["defaultTestModeName"].asString();
-
+	config.load(configFileIn);
 	printLog("Success to load config.");
 }
-void Kernel::writeConfig()
+void Kernel::saveConfig()
 {
+	string configFileName = (string)"user_data" + SLASH + userName + SLASH + "config.txt";
 	std::ofstream configFileOut(configFileName);
 	if(!configFileOut.is_open())
 	{
 		printLog("Failed to open config file. Saving config failed.");
 		throw std::runtime_error("Failed to open config file. Saving config failed.");
 	}
-
-	Json::Value json;
-	json["defaultTestSize"] = defaultTestSize;
-	json["dataFileName"] = dataFileName;
-	json["wordSelectStrategyId"] = wordSelectStrategyId;
-	json["defaultTestModeName"] = defaultTestModeName;
-	configFileOut << json;
-
+	config.save(configFileOut);
 	printLog("Success to save config.");
 }
 void Kernel::loadDictionary ()
 {
-	std::ifstream wordFileIn(dataFileName);
+	std::ifstream wordFileIn(config.dictFileName);
 	if(!wordFileIn.is_open())
 	{
-		string errorString = "Failed to open dictionary file: " + dataFileName;
+		string errorString = "Failed to open dictionary file: " + config.dictFileName;
 		printLog(errorString);
 		throw std::runtime_error(errorString);
 	}
@@ -89,15 +75,40 @@ void Kernel::loadDictionary ()
 }
 void Kernel::saveDictionary ()
 {
-	std::ofstream wordFileOut(dataFileName);
+	std::ofstream wordFileOut(config.dictFileName);
 	if(!wordFileOut.is_open())
 	{
-		string errorString = "Failed to open dictionary file: " + dataFileName;
+		string errorString = "Failed to open dictionary file: " + config.dictFileName;
 		printLog(errorString);
 		throw std::runtime_error(errorString);
 	}
 	dataBase->saveDictInfo(wordFileOut);
 	printLog("Success to save dictionary.");
+}
+
+void Kernel::loadUserWord ()
+{
+	std::ifstream file (config.userWordFileName);
+	if(!file.is_open())
+	{
+		printLog("Failed to open user word file. Ignore!");
+		return;
+	}
+	dataBase->loadUserInfo(file);
+	printLog("Success to load user word.");
+}
+
+void Kernel::saveUserWord ()
+{
+	std::ofstream file (config.userWordFileName);
+	if(!file.is_open())
+	{
+		string errorString = "Failed to open user word file: " + config.userWordFileName;
+		printLog(errorString);
+		throw std::runtime_error(errorString);
+	}
+	dataBase->saveUserInfo(file);
+	printLog("Success to save user word.");
 }
 
 string Kernel::getVersion () const
@@ -106,7 +117,7 @@ string Kernel::getVersion () const
 }
 int Kernel::getDefaultTestSize () const
 {
-	return defaultTestSize;
+	return config.defaultTestSize;
 }
 void Kernel::setDefaultTestSize (int v)
 {
@@ -115,25 +126,7 @@ void Kernel::setDefaultTestSize (int v)
 		printLog("Failed to set default test size. It must be >0.");
 		return;
 	}
-	defaultTestSize = v;
-}
-string Kernel::getDataFileName () const
-{
-	return dataFileName;
-}
-void Kernel::setDataFileName (string const& fileName)
-{
-	dataFileName = fileName;
-	printLog("Success to set data file name: " + fileName);
-}
-string Kernel::getConfigFileName () const
-{
-	return configFileName;
-}
-void Kernel::setConfigFileName (string const& fileName)
-{
-	configFileName = fileName;
-	printLog("Success to set config file name: " + fileName);
+	config.defaultTestSize = v;
 }
 
 vector<string> Kernel::getTestModeList () const
@@ -142,25 +135,25 @@ vector<string> Kernel::getTestModeList () const
 }
 string Kernel::getDefaultTestMode () const
 {
-	return defaultTestModeName;
+	return config.defaultTestModeName;
 }
 void Kernel::setDefaultTestMode (string const& testModeName)
 {
 	if(std::find(TEST_MODE_NAME.begin(), TEST_MODE_NAME.end(), testModeName) == TEST_MODE_NAME.end())
 		printLog("Failed to set default test mode.  No such name: " + testModeName);
 	else
-		defaultTestModeName = testModeName;
+		config.defaultTestModeName = testModeName;
 }
 WordSelectStrategy* Kernel::getWordSelectStrategy() const
 {
-	return wordSelectStrategyList.at(wordSelectStrategyId);
+	return wordSelectStrategyList.at(config.wordSelectStrategyId);
 }
 WordKernel* Kernel::getNewWordKernel (const WordInfo* word) const
 {
 	return new WordKernel(const_cast<WordInfo*>(word));
 }
 
-#define TEST_KERNEL_PARAMETER (dataBase, getWordSelectStrategy(), size == 0? defaultTestSize: size)
+#define TEST_KERNEL_PARAMETER (dataBase, getWordSelectStrategy(), size == 0? config.defaultTestSize: size)
 TestKernel_SpellMode* Kernel::getNewSpellTestKernel (int size) const
 {
 	return new TestKernel_SpellMode TEST_KERNEL_PARAMETER;
