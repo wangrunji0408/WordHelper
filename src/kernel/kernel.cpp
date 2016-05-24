@@ -16,14 +16,14 @@
 
 Kernel::Kernel ()
 {	
-	wordSelectStrategyList.push_back(new WordSelectStrategy_Random(dataBase));
+	
 }
 Kernel::~Kernel ()
 {
-	if(userName != "")
-		logout();
 	for(auto strategy: wordSelectStrategyList)
 		delete strategy;
+	if(userName != "")
+		logout();
 }
 
 void Kernel::login (string const& _userName)

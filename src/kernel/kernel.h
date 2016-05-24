@@ -29,9 +29,10 @@ protected:
     Config config;
 	
 	// 重要成员
-	DataBase* 						dataBase;
-	vector<WordSelectStrategy*> 	wordSelectStrategyList;	// 在构造时new出所有策略，此后为常量，在析构时依次delete
-	vector<string> 					searchHistoryList;
+	DataBase* 							dataBase;
+	vector<WordSelectStrategy*> const	wordSelectStrategyList = 
+		{new WordSelectStrategy_Random()};
+	vector<string> 						searchHistoryList;
 protected:
 	// 读写
 	void loadConfig ();
