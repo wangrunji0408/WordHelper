@@ -6,11 +6,17 @@ Developed by 赵嘉霖 彭炳辉 王润基.
 
 ### 编译方法
 
-打开终端，进入`./src/`，使用`make`编译。
+打开终端至本程序根目录，进入`./src/`，使用`make`编译。
 
-make会将所有文件生成在`/release/$(OS_NAME)/`文件夹中。
+make会将所有文件生成在`./release/$(OS_NAME)/`文件夹中。
 
 其中`OS_NAME`=`Windows`/`Linux`/`Darwin`(Mac)，取决于所在系统。
+
+**Windows用户注意：**
+
+由于Windows文件编码原因，需要手动将词典文件转码：
+
+将词典文件`dictionary.txt`用记事本打开，原地另存为，将编码方式修改为`ANSI`。
 
 ### 运行方法
 
