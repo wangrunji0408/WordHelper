@@ -1,12 +1,8 @@
 // 作者：赵嘉霖
 
 #include "word_select_strategy.h"
-WordSelectStrategy::WordSelectStrategy (const DataBase* _database)
-{
-	dataBase = _database;
-}
 
-vector<WordInfo*> WordSelectStrategy_Random::getWordList (int number) const
+vector<WordInfo*> WordSelectStrategy_Random::getWordList (const DataBase* dataBase, int number) const
 {
 	class Func
 	{

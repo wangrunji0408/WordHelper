@@ -11,7 +11,7 @@ string toLower (string const& str)
 	return s;
 }
 
-// Sentence Meaning WordInfo 三个类 与 Json::Value 的相互转化
+// Sentence Meaning Word 三个类 与 Json::Value 的相互转化
 
 Sentence::Sentence (Json::Value const& json)
 {
@@ -48,22 +48,15 @@ Meaning::operator Json::Value () const
 	return json;
 }
 
-WordInfo::WordInfo (Json::Value const& json)
+WordDictInfo::WordDictInfo (Json::Value const& json)
 {
 	word = json["word"].asString();
 	pronunciation = json["pron"].asString();
-	rememberLevel = json["level"].asInt();
-	lastTestTime = json["lasttime"].asInt();
 
 	int const meaningSize = json["mean"].size();
 	meaningList.resize(meaningSize);
 	for(int i=0; i<meaningSize; ++i)
 		meaningList[i] = Meaning( json["mean"][i] );
-
-	int const noteSize = json["note"].size();
-	noteList.resize(noteSize);
-	for(int i=0; i<noteSize; ++i)
-		noteList[i] = json["note"][i].asString();
 
 	int const tagSize = json["tag"].size();
 	tagList.resize(tagSize);
@@ -76,20 +69,72 @@ WordInfo::WordInfo (Json::Value const& json)
 		similarWordList[i] = json["similar"][i].asString();
 }
 
-WordInfo::operator Json::Value () const
+WordDictInfo::operator Json::Value () const
 {
 	Json::Value json;
 	json["word"] = word;
 	json["pron"] = pronunciation;
-	json["level"] = rememberLevel;
-	json["lasttime"] = (int)lastTestTime;
 	for(Meaning const& meaning: meaningList)
 		json["mean"].append( (Json::Value)meaning );
-	for(string const& note: noteList)
-		json["note"].append(note);
 	for(string const& tag: tagList)
 		json["tag"].append(tag);
 	for(string const& similar: similarWordList)
 		json["similar"].append(similar);
 	return json;
+}
+
+WordUserInfo::WordUserInfo ():
+	rememberLevel(0), lastTestTime(0) {}
+
+WordUserInfo::WordUserInfo (Json::Value const& json)
+{
+	userWord = json["word"].asString();
+	rememberLevel = json["level"].asInt();
+	lastTestTime = json["lasttime"].asInt();
+
+	int const noteSize = json["note"].size();
+	noteList.resize(noteSize);
+	for(int i=0; i<noteSize; ++i)
+		noteList[i] = json["note"][i].asString();
+
+	int const tagSize = json["userTag"].size();
+	userTagList.resize(tagSize);
+	for(int i=0; i<tagSize; ++i)
+		userTagList[i] = json["usertag"][i].asString();
+
+	int const sentenceSize = json["userSentence"].size();
+	userSentenceList.resize(sentenceSize);
+	for(int i=0; i<sentenceSize; ++i)
+		userSentenceList[i] = json["userSentence"][i];
+}
+
+WordUserInfo::operator Json::Value () const
+{
+	Json::Value json;
+	json["word"] = userWord;
+	json["level"] = rememberLevel;
+	json["lasttime"] = (int)lastTestTime;
+	for(string const& note: noteList)
+		json["note"].append(note);
+	for(string const& tag: userTagList)
+		json["userTag"].append(tag);
+	for(Sentence const& sentence: userSentenceList)
+		json["userSentence"].append( (Json::Value)sentence );
+	return json;
+}
+
+bool WordUserInfo::empty () const
+{
+	return noteList.empty() && userTagList.empty() && userSentenceList.empty() 
+		&& rememberLevel == 0 && lastTestTime == 0;
+}
+
+void WordInfo::clearUserInfo ()
+{
+	userWord.clear();
+	noteList.clear();
+	userTagList.clear();
+	userSentenceList.clear();
+	rememberLevel = 0;
+	lastTestTime = 0;
 }

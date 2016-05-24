@@ -39,11 +39,24 @@ void Shell::printTitle (string const& str) const
 void Shell::printHello () const
 {
 	printTitle("WordHelper " + kernel->getVersion());
+	printLn("Welcome " + kernel->getUserName() + "!");
 	printLn("Enter \"help\" or \"?\" to get command list.");
 }
 void Shell::printHelpInfo () const
 {
 	printTitle("Command List");
+	#ifdef _WIN32
+	printLn("  [x] exit");
+	printLn("  [?] help");
+	printLn("  [h] history [max_size]");
+	printLn("  [s] search  <word>");
+	printLn("  [w] word    <word>");
+	printLn("  [t] test    [test_mode] [word_size]");
+	printLn("                  └---> spell recall choiceE choiceC");
+	printLn("  [a] analyze <file>");
+	printLn("  [ ] set     <variable> <value>");
+	printLn("  [ ] get");
+	#else	// *nix
 	printLn("  退    出    [x] exit");
 	printLn("  帮    助    [?] help");
 	printLn("  搜索历史    [h] history [max_size]");
@@ -54,6 +67,7 @@ void Shell::printHelpInfo () const
 	printLn("  文本分析    [a] analyze <file>");
 	printLn("  变量设置    [ ] set     <variable> <value>");
 	printLn("  变量查看    [ ] get");
+	#endif
 	printDividingLine();
 }
 void Shell::printHistory (int size) const
@@ -123,7 +137,8 @@ void Shell::printWordFull (const WordInfo* word) const
 }
 void Shell::printWordInJson (const WordInfo* word) const
 {
-	out << (Json::Value)*word;
+	out << (Json::Value)* static_cast<const WordDictInfo*>(word)
+		<< (Json::Value)* static_cast<const WordUserInfo*>(word);
 }
 
 void Shell::searchWord (string const& str) const
@@ -205,7 +220,7 @@ bool Shell::parseCommand (string const& command)
 			printError("Failed to read word.");
 		else
 		{
-			auto wordinfo = kernel->strictSearchByEnglish(word);
+			auto wordinfo = kernel->strictSearchByEnglish(word, false);	// without logging
 			if(wordinfo == nullptr)
 				printLn("No such word.");
 			else
@@ -225,7 +240,7 @@ bool Shell::parseCommand (string const& command)
 				printError("Failed to read mode name.");
 			else	// 没有参数
 			{
-				if(Test( kernel->getDefaultTestMode() ))
+				if(Test( kernel->getDefaultTestMode(), 0 ))
 					return true;
 			}
 		}
@@ -237,7 +252,7 @@ bool Shell::parseCommand (string const& command)
 				printError("Failed to read word_size.");
 			else
 			{
-				if(Test(modeName))
+				if(Test(modeName, size))
 					return true;
 			}
 		}
@@ -296,6 +311,22 @@ bool Shell::parseCommand (string const& command)
 	else if(cmd == "get")
 	{
 		printVariables();
+	}
+	else if(cmd == "show")
+	{
+		string word;
+		stm >> word;
+		if(stm.fail())
+			printError("Failed to read word.");
+		else
+		{
+			auto wordinfo = kernel->strictSearchByEnglish(word, false);	// without logging
+			if(wordinfo == nullptr)
+				printLn("No such word.");
+			else
+				printWordInJson(wordinfo);
+			return true;
+		}
 	}
 	else
 	{

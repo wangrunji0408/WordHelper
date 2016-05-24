@@ -18,9 +18,10 @@ vector<string> TextAnalyzeKernelImpl::textParser (string const& _text) {
 
 	while(pos.textPosition < text.size()) {
 		if(pos.status == 0) {
-			if(isalpha(text[pos.textPosition]))
+			if(isalpha(text[pos.textPosition])) {
 				pos.status = 1;
 				tmpWord = text[pos.textPosition];
+			}
 		}
 		else {
 			if(isalpha(text[pos.textPosition])) {

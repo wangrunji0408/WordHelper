@@ -19,10 +19,16 @@ class DataBase
 {
 public:
 	virtual ~DataBase() {}
-	// 从一个输入流构造类
-	virtual void loadFromIStream (istream&) = 0;
-	// 把信息保存到一个输出流
-	virtual void writeToOStream (ostream&) const = 0;
+	// （从一个输入流）读取用户信息
+	virtual void loadUserInfo (istream&) = 0;
+	// （向一个输出流）保存用户信息
+	virtual void saveUserInfo (ostream&) const = 0;
+	// 清除用户信息
+	virtual void clearUserInfo () = 0;
+	// （从一个输入流）读取词典信息
+	virtual void loadDictInfo (istream&) = 0;
+	// （向一个输出流）写入词典信息 由于对词典只读，一般不可调用
+	virtual void saveDictInfo (ostream&) const = 0;
 	// 根据自定的filter函数，返回满足要求的单词列表
 	virtual vector<WordInfo*> getWordList ( function<bool(WordInfo const&)> = alwaysTrue ) const = 0;
 	virtual vector<const WordInfo*> getWordListConst ( function<bool(WordInfo const&)> = alwaysTrue ) const = 0;
@@ -43,8 +49,11 @@ public:
 	// 析构函数，依次delete每个WordInfo*
 	~DataBaseImpl ();
 	// 实现接口
-	virtual void loadFromIStream (istream&);
-	virtual void writeToOStream (ostream&) const;
+	virtual void loadUserInfo (istream&);
+	virtual void saveUserInfo (ostream&) const;
+	virtual void clearUserInfo ();
+	virtual void loadDictInfo (istream&);
+	virtual void saveDictInfo (ostream&) const;
 	virtual vector<WordInfo*> getWordList ( function<bool(WordInfo const&)> ) const;
 	virtual vector<const WordInfo*> getWordListConst ( function<bool(WordInfo const&)> ) const;
 	virtual WordInfo* getWord (string const&) const;

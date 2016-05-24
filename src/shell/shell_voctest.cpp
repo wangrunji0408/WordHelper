@@ -103,16 +103,16 @@ void Shell::Test_RecallMode (int size) const
 
 // 以下作者：王润基
 
-bool Shell::Test (string const& testModeName) const
+bool Shell::Test (string const& testModeName, int size) const
 {
 	if(testModeName == "recall")
-		Test_RecallMode(0);
+		Test_RecallMode(size);
 	else if(testModeName == "spell")
-		Test_SpellMode(0);
+		Test_SpellMode(size);
 	else if(testModeName == "choiceE")
-		Test_ChoiceMode(0, true);
+		Test_ChoiceMode(size, true);
 	else if(testModeName == "choiceC")
-		Test_ChoiceMode(0, false);
+		Test_ChoiceMode(size, false);
 	else
 	{
 		printError("No such mode.");

@@ -14,12 +14,12 @@ public:
 	// 修改通过以下方法
 	void addNote (string const&);
 	void addTag (string const&);
-	void addMeaning (string const& partOfSpeech, string const& explain);
-	void addSentence (int meaningId, string const& str, string const& trans);
+	void addSentence (string const& str, string const& trans);
 	void delNote (int noteId);
 	void delTag (string const&);
-	void delMeaning (int meaningId);
-	void delSentence (int meaningId, int sentenceId);
+	void delSentence (int sentenceId);
+	//void addMeaning (string const& partOfSpeech, string const& explain);
+	//void delMeaning (int meaningId);
 };
 
 #endif //_WORD_KERNEL_H

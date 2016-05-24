@@ -2,10 +2,12 @@
 
 #include "test_kernel.h"
 
-TestKernel::TestKernel (DataBase* _database, WordSelectStrategy* wordselectstrategy, int _wordNum):
+TestKernel::TestKernel (DataBase* _database,
+						WordSelectStrategy* wordselectstrategy,
+						int _wordNum):
 	dataBase(_database), wordNum(_wordNum)
 {
-	list = wordselectstrategy -> getWordList(_wordNum);
+	list = wordselectstrategy->getWordList(dataBase, wordNum);
 }
 int TestKernel::getSize () const
 {
