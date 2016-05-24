@@ -13,18 +13,17 @@ int TestKernel::getSize () const
 {
 	return wordNum;
 }
+int TestKernel::getNowOrder() const
+{
+	return present + 1;
+}
 const WordInfo* TestKernel::getWordInfoPtr () const
 {
 	return list[present];
 }
-string TestKernel_RecallMode::getWordString () const
+void TestKernel::setCurrectWordLevelMax () const
 {
-	return list[present] -> word;
-}
-void TestKernel_RecallMode::returnUserAction (bool remember)
-{
-	if(remember)
-		list[present] -> rememberLevel ++;
+	list[present]->rememberLevel = WORD_LEVEL_MAX;
 }
 void TestKernel::goNext ()
 {
@@ -42,6 +41,17 @@ bool TestKernel::isEnd() const
 		return false;
 	}
 }
+
+string TestKernel_RecallMode::getWordString () const
+{
+	return list[present] -> word;
+}
+void TestKernel_RecallMode::returnUserAction (bool remember)
+{
+	if(remember)
+		list[present] -> rememberLevel ++;
+}
+
 bool TestKernel_SpellMode::returnUserAction (string const& userSpell) const
 {
 	if (userSpell == list[present] -> word)

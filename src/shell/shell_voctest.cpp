@@ -11,14 +11,15 @@ void Shell::Test_SpellMode (int size) const
 	clearScreen();
 	out << "Test start. (Spell Mode)" << endl;
 	TestKernel_SpellMode* spell = kernel -> getNewSpellTestKernel (size);
-	bool isEnd = false;
 	for(int order = 1; !spell -> isEnd(); ++order)
 	{
+		if(order > 1)
+			clearScreen();
 		std::stringstream stm;
 		stm << order << '/' << spell->getSize();
 		printTitle(stm.str());
 
-		WordInfo* const word = spell -> getWordInfoPtr();
+		const WordInfo* word = spell -> getWordInfoPtr();
 		for(int i = 0; i < word -> meaningList.size(); i ++) // 输出中文解释
 		{
 			if (i != 0)
@@ -42,7 +43,7 @@ void Shell::Test_SpellMode (int size) const
 			out << "wrong ×" << endl;
 		}
 		//printWordFull(word);
-		test_word_manage(word, spell, isEnd);
+		bool isEnd = test_word_manage(word, spell);
 		if(isEnd) {
 			break;
 		}
@@ -59,15 +60,16 @@ void Shell::Test_RecallMode (int size) const
 		size = kernel->getDefaultTestSize();
 	clearScreen();
 	out << "Test start. (Recall Mode)" << endl;
-	bool isEnd = false;
 	TestKernel_RecallMode* recall = kernel -> getNewRecallTestKernel (size);
 	for(int order = 1; !recall -> isEnd(); ++order)
 	{
+		if(order > 1)
+			clearScreen();
 		std::stringstream stm;
 		stm << order << '/' << recall->getSize();
 		printTitle(stm.str());
 
-		WordInfo* const word = recall -> getWordInfoPtr();
+		const WordInfo* word = recall -> getWordInfoPtr();
 		out << recall -> getWordString() << endl;
 		string choice;
 		while(true)
@@ -90,7 +92,7 @@ void Shell::Test_RecallMode (int size) const
 			}
 		}
 		//printWordFull(word);
-		test_word_manage(word, recall, isEnd);
+		bool const isEnd = test_word_manage(word, recall);
 		if(isEnd) {
 			break;
 		}
@@ -133,9 +135,10 @@ void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 	else
 		out << "Test start. (Choice Chinese Mode)" << endl;
 
-	bool isEnd = false;
 	for(int order = 1; !testKernel -> isEnd(); ++order)
 	{
+		if(order > 1)
+			clearScreen();
 		std::stringstream stm;
 		stm << order << '/' << testKernel->getSize();
 		printTitle(stm.str());
@@ -147,14 +150,14 @@ void Shell::Test_ChoiceMode (int size, bool choiceEnglish) const
 		out << "Choice: ";
 		char userChoice;
 		in >> userChoice;
-		bool judge = testKernel -> returnUserAction (userChoice - 'A');
+		bool judge = testKernel -> returnUserAction (toupper(userChoice) - 'A');
 		if (judge)
 			out << "right √" << endl;
 		else
 			out << "wrong ×" << "  Answer: " << (char)('A' + testKernel->getAnswerId()) << endl;
 		out << endl;
 		//printWordFull(testKernel -> getWordInfoPtr());
-		test_word_manage(testKernel -> getWordInfoPtr(), testKernel, isEnd);
+		bool const isEnd = test_word_manage(testKernel -> getWordInfoPtr(), testKernel);
 		if(isEnd) {
 			break;
 		}

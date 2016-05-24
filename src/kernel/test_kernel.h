@@ -14,9 +14,11 @@ protected:
 public:
 	TestKernel (DataBase*, WordSelectStrategy*, int _wordNum);
 	int getSize () const;
-	WordInfo* const getWordInfoPtr () const;
+	const WordInfo* getWordInfoPtr () const;
 	void goNext ();
 	bool isEnd () const;
+	void setCurrectWordLevelMax () const;
+	int getNowOrder() const;
 };
 
 // 单词测试模式1：给出英文，让用户回忆中文，询问记住没记住
