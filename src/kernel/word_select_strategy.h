@@ -23,7 +23,7 @@ public:
 	virtual vector<WordInfo*> getWordList (const DataBase* dataBase, int number) const;
 };
 
-class WordSelectStrategy_Random: public WordSelectStrategy
+class WordSelectStrategy_Sequence: public WordSelectStrategy
 {
 public:
 	using WordSelectStrategy::WordSelectStrategy;

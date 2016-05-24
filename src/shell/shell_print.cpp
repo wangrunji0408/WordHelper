@@ -111,7 +111,12 @@ void Shell::printWordSimple (const WordInfo* word) const
 void Shell::printWordFull (const WordInfo* word) const
 {
 	printDividingLine();
-	out << word -> word << "  |" << word -> pronunciation << "|" << endl;
+	out << word -> word << "  ";
+	#ifdef _WIN32
+	out << "|" << word -> pronunciation << "|" << endl;
+	#else
+	out << endl;
+	#endif
 	for(auto const& meaning: word -> meaningList)
 	{
 		out << std::setw(4) << meaning.partOfSpeech << ". " << meaning.explain << endl;
