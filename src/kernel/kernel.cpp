@@ -31,6 +31,7 @@ void Kernel::login (string const& _userName)
 		printLog("Attempt to login a new user before logout. Auto logout.");
 		logout();
 	}
+	system("mkdir user_data");
 	system(((string)"mkdir user_data" + SLASH + _userName).c_str());
 	userName = _userName;
 	dataBase = new DataBaseImpl;
