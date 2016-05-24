@@ -7,8 +7,9 @@
 
 using namespace std;
 
-int main ()
+int main (int argc, char** argv)
 {
+	cout << argv[0] << endl;
 	Kernel kernel;
 	while(true)
 	{

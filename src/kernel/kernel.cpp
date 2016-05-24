@@ -6,13 +6,11 @@
 #include <fstream>
 #include <cstdlib>
 
-/*
 #ifdef _WIN32
 #define SLASH "\\"
 #else
-*/
 #define SLASH "/"
-//#endif
+#endif
 
 Kernel::Kernel ()
 {	
@@ -33,7 +31,7 @@ void Kernel::login (string const& _userName)
 		printLog("Attempt to login a new user before logout. Auto logout.");
 		logout();
 	}
-	system(((string)"mkdir user_data/" + _userName).c_str());
+	system(((string)"mkdir user_data" + SLASH + _userName).c_str());
 	userName = _userName;
 	dataBase = new DataBaseImpl;
 	loadConfig();

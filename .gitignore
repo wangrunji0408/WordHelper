@@ -11,6 +11,7 @@
 
 #
 
+release/
 src/main
 src/zjl_worddata/DataBaseInit
 src/zjl_worddata/WordParse_*

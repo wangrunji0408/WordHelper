@@ -1,61 +1,38 @@
-OS_NAME = $(shell uname)
+include config.make
 
-ifeq ($(OS_NAME), Linux)
-	# Linux
-	DSO_POSTFIX = .so
-	LS = ls
-	RM = rm
-	SLASH = /
-else
+LD_FLAG = -Lword -Lkernel -Lshell
+LD_LIB = -lword -lkernel -lshell
+TARGET := ..$(SLASH)release$(SLASH)$(OS_NAME)
 
-ifeq ($(OS_NAME), Darwin)
-	# Mac
-	DSO_POSTFIX = .dylib
-	LS = ls
-	RM = rm
-	SLASH = /
-else
-	# Windows
-	OS_NAME = Windows
-	DSO_POSTFIX = .dll
-	LS = dir /b
-	RM = del
-	SLASH = \\
-endif
+all: libword libkernel libshell main copy
 
-endif
+main: main.o
+	g++ $(CPP_FLAGS) $(LD_FLAG) $(LD_LIB) -o $@ $^
 
-CPP_FLAGS := -std=c++11 -fPIC 
+libshell:
+	cd shell && make
 
-WORD_SRC := $(shell $(LS) word$(SLASH)*.cpp)
-WORD_OBJ := $(patsubst %.cpp, %.o, $(WORD_SRC))
-KERNEL_SRC := $(shell $(LS) kernel$(SLASH)*.cpp)
-KERNEL_OBJ := $(patsubst %.cpp, %.o, $(KERNEL_SRC))
-SHELL_SRC := $(shell $(LS) shell$(SLASH)*.cpp)
-SHELL_OBJ := $(patsubst %.cpp, %.o, $(SHELL_SRC))
+libkernel:
+	cd kernel && make
 
-LIB_WORD := word$(SLASH)libword$(DSO_POSTFIX)
-LIB_KERNEL := kernel$(SLASH)libkernel$(DSO_POSTFIX)
-LIB_SHELL := shell$(SLASH)libshell$(DSO_POSTFIX)
-LIB := $(LIB_WORD) $(LIB_KERNEL) $(LIB_SHELL)
+libword:
+	cd word && make
 
-all: main 
-
-main: main.o $(LIB)
-	g++ $(CPP_FLAGS) -o $@ $^
-
-$(LIB_SHELL): $(SHELL_OBJ) $(LIB_KERNEL) $(LIB_WORD)
-	g++ $(CPP_FLAGS) -o $@ -shared $^
-
-$(LIB_KERNEL): $(KERNEL_OBJ) $(LIB_WORD) 
-	g++ $(CPP_FLAGS) -o $@ -shared $^
-
-$(LIB_WORD): $(WORD_OBJ)
-	g++ $(CPP_FLAGS) -o $@ -shared $^ 
+copy:
+	-mkdir ..$(SLASH)release
+	-mkdir $(TARGET)
+	$(CP) main$(EXE_POSTFIX) $(TARGET)
+	$(CP) word$(SLASH)libword$(DSO_POSTFIX) $(TARGET)
+	$(CP) kernel$(SLASH)libkernel$(DSO_POSTFIX) $(TARGET)
+	$(CP) shell$(SLASH)libshell$(DSO_POSTFIX) $(TARGET)
+	$(CP) *.txt $(TARGET)
 
 %.o: %.cpp
 	g++ $(CPP_FLAGS) -o $@ -c $<
 	
 .PHONY: clean
 clean:
-	$(RM) $(shell $(LS) *.o kernel$(SLASH)*.o shell$(SLASH)*.o word$(SLASH)*.o) $(LIB)
+	$(RM) main$(EXE_POSTFIX) main.o
+	cd word && make clean
+	cd kernel && make clean
+	cd shell && make clean
