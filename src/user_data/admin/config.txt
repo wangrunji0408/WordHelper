@@ -3,5 +3,5 @@
 	"defaultTestSize" : 10,
 	"dictFileName" : "dictionary.txt",
 	"userWordFileName" : "user_data/admin/user_word.txt",
-	"wordSelectStrategyId" : 0
+	"wordSelectStrategy" : "random"
 }

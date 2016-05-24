@@ -10,7 +10,7 @@ struct Config
 	int defaultTestSize = 50;
 	std::string dictFileName = "dictionary.txt";
 	std::string userWordFileName = "user_data/admin/user_word.txt";
-	int wordSelectStrategyId = 0;
+	std::string wordSelectStrategy = "random";
 	std::string defaultTestModeName = "recall";
 
 	void load (std::istream&);

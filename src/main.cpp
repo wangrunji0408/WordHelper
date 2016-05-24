@@ -9,7 +9,6 @@ using namespace std;
 
 int main (int argc, char** argv)
 {
-	cout << argv[0] << endl;
 	Kernel kernel;
 	while(true)
 	{
@@ -28,6 +27,6 @@ int main (int argc, char** argv)
 		Shell shell(&kernel, cin, cout);
 		shell.run();
 		kernel.logout();
+		return 0;
 	}
-	
 }

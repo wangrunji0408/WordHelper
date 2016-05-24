@@ -6,10 +6,21 @@
 // 单词选择策略，属于TestKernel。其实是个函数，根据Database，输出单词的有序列表
 class WordSelectStrategy
 {
+protected:
+	string const name;
 public:
+	WordSelectStrategy (string const& _name): name(_name) {} 
+	string getName () const {return name;}
 	// 接口
 	virtual ~WordSelectStrategy () = default;
-	virtual vector<WordInfo*> getWordList (const DataBase* dataBase, int number) const = 0;
+	virtual vector<WordInfo*> getWordList (const DataBase* dataBase, int number) const = 0;	
+};
+
+class WordSelectStrategy_Random: public WordSelectStrategy
+{
+public:
+	using WordSelectStrategy::WordSelectStrategy;
+	virtual vector<WordInfo*> getWordList (const DataBase* dataBase, int number) const;
 };
 
 class WordSelectStrategy_Random: public WordSelectStrategy

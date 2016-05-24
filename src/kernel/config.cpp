@@ -10,7 +10,7 @@ void Config::load (std::istream& in)
 	defaultTestSize = json["defaultTestSize"].asInt();
 	dictFileName = json["dictFileName"].asString();
 	userWordFileName = json["userWordFileName"].asString();
-	wordSelectStrategyId = json["wordSelectStrategyId"].asInt();
+	wordSelectStrategy = json["wordSelectStrategy"].asString();
 	defaultTestModeName = json["defaultTestModeName"].asString();
 }
 
@@ -20,7 +20,7 @@ void Config::save (std::ostream& out) const
 	json["defaultTestSize"] = defaultTestSize;
 	json["dictFileName"] = dictFileName;
 	json["userWordFileName"] = userWordFileName;
-	json["wordSelectStrategyId"] = wordSelectStrategyId;
+	json["wordSelectStrategy"] = wordSelectStrategy;
 	json["defaultTestModeName"] = defaultTestModeName;
 	out << json;
 }
