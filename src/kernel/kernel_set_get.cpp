@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include <algorithm>
 
 string Kernel::getVersion () const
 {
