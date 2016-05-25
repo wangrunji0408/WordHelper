@@ -4,7 +4,7 @@
 
 void Kernel::loadConfig ()
 {
-	string configFileName = (string)"user_data" + SLASH + userName + SLASH + "config.txt";
+	string configFileName = userPath + SLASH + "config.txt";
 	std::ifstream configFileIn(configFileName);
 	if(!configFileIn.is_open())
 	{
@@ -17,7 +17,7 @@ void Kernel::loadConfig ()
 }
 void Kernel::saveConfig()
 {
-	string configFileName = (string)"user_data" + SLASH + userName + SLASH + "config.txt";
+	string configFileName = userPath + SLASH + "config.txt";
 	std::ofstream configFileOut(configFileName);
 	config.save(configFileOut);
 	printLog("Success to save config.");

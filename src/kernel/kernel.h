@@ -30,6 +30,7 @@ protected:
 	vector<string> const TEST_MODE_NAME = {"recall", "spell", "choiceE", "choiceC"};
 	// 全局参数
 	string userName;
+	string userPath;
 	string version = "0.98";
     Config config;
 	// 重要成员
@@ -51,10 +52,8 @@ protected:
 	// 获取当前选词策略
 	WordSelectStrategy* getWordSelectStrategyPtr() const;
 public:
-	Kernel();
+	Kernel (string const& _userName, string const& _userPath);
 	~Kernel ();
-	void login (string const& userName);
-	void logout ();
 
 	//==========参数的获取与修改=====kernel_set_get.cpp==========
 	string 	getUserName () const;

@@ -2,14 +2,14 @@
 #include <fstream>
 #include <sstream>
 
-#include "kernel/kernel.h"
+#include "kernel/logger.h"
 #include "shell/shell.h"
 
 using namespace std;
 
 int main (int argc, char** argv)
 {
-	Kernel kernel;
+	Logger logger;
 	while(true)
 	{
 		string userName;
@@ -23,10 +23,11 @@ int main (int argc, char** argv)
 			userName = "admin";
 			cout << "Login defalut user: " << userName << endl;
 		}
-		kernel.login(userName);
-		Shell shell(&kernel, cin, cout);
+		logger.login(userName, "");
+		Kernel* kernel = logger.getNewKernel();
+		Shell shell(kernel, cin, cout);
 		shell.run();
-		kernel.logout();
+		delete kernel;
 		return 0;
 	}
 }
