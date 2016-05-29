@@ -48,6 +48,7 @@ protected:
 	void saveDictionary ();
 	void loadUserWord ();
 	void saveUserWord ();
+	void writeWordList ();
 	//=========================================================
 	// 获取当前选词策略
 	WordSelectStrategy* getWordSelectStrategyPtr() const;

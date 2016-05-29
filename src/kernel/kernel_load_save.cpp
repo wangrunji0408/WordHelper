@@ -59,3 +59,11 @@ void Kernel::saveUserWord ()
 	dataBase->saveUserInfo(file);
 	printLog("Success to save user word.");
 }
+
+void Kernel::writeWordList ()
+{
+	std::ofstream fout ("wordlist.txt");
+	for(const WordInfo* const& word: dataBase->getWordListConst())
+		fout << word->word << '\n';
+	fout.close();
+}

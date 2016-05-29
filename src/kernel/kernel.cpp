@@ -21,6 +21,7 @@ Kernel::~Kernel ()
 		delete strategy;
 	saveUserWord();
 	saveConfig();
+	writeWordList();
 	delete dataBase;
 	printLog("Success to logout: " + userName);
 }

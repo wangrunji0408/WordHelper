@@ -3,6 +3,7 @@
 
 //#pragma comment(lib, "libjsoncpp.a")
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <ctime>
@@ -10,6 +11,8 @@
 
 using std::string;
 using std::vector; 
+using std::istream;
+using std::ostream;
 
 // 句子 包含英文和中文
 struct Sentence
@@ -20,6 +23,8 @@ struct Sentence
 	Sentence () = default;
 	Sentence (Json::Value const&);
 	operator Json::Value () const;
+	friend istream& operator >> (istream&, Sentence&);
+	friend ostream& operator << (ostream&, Sentence const&);
 };
 
 // 某个单词的一个意思
@@ -32,6 +37,8 @@ struct Meaning
 	Meaning () = default;
 	Meaning (Json::Value const&);
 	operator Json::Value () const;
+	friend istream& operator >> (istream&, Meaning&);
+	friend ostream& operator << (ostream&, Meaning const&);
 };
 
 // 一个单词
@@ -49,6 +56,8 @@ struct WordDictInfo
 	WordDictInfo () = default;
 	WordDictInfo (Json::Value const&);
 	operator Json::Value () const;
+	friend istream& operator >> (istream&, WordDictInfo&);
+	friend ostream& operator << (ostream&, WordDictInfo const&);
 };
 
 struct WordUserInfo
@@ -63,6 +72,8 @@ struct WordUserInfo
 	WordUserInfo ();
 	WordUserInfo (Json::Value const&);
 	operator Json::Value () const;
+	friend istream& operator >> (istream&, WordUserInfo&);
+	friend ostream& operator << (ostream&, WordUserInfo const&);
 	bool empty() const;
 };
 
