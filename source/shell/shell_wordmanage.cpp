@@ -8,7 +8,7 @@ void Shell::wordManage (const WordInfo* word) const {
 	string command;
 	printTitle("Manage your own word: " + word->word);
 	printWordFull(word);
-	printLn("Please enter \"help\" to get command list");
+	printLn("Please enter \"help\" or \"?\" to get command list.");
 	do {
 		out << word->word << " $ ";
 		std::getline(in, command);
@@ -22,29 +22,28 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 	std::stringstream stm;
 	stm << command;
 	stm >> cmd;
-	if(cmd == "help"){
-		printLn("-------------------------------------");
-		printLn("            Command list             ");
-		printLn("  help");
-		printLn("  exit");
-		printLn("  addNote");
-		printLn("  addTag");
+	if(cmd == "help" || cmd == "?"){
+		printTitle("Command List");
+		printLn("  [ ?] help");
+		printLn("  [ x] exit");
+		printLn("  [an] addNote");
+		printLn("  [at] addTag");
 		//printLn("  addMeaning");
-		printLn("  addSentence");
-		printLn("  delNote");
-		printLn("  delTag");
+		printLn("  [as] addSentence");
+		printLn("  [dn] delNote");
+		printLn("  [dt] delTag");
 		//printLn("  delMeaning");
-		printLn("  delSentence");
-		printLn("-------------------------------------");
+		printLn("  [ds] delSentence");
+		printDividingLine();
 		return true;
 	}
-	if(cmd == "exit") {
+	if(cmd == "exit" || cmd == "x") {
 		return false;
 	}
 	if(cmd == "") {
 		return true;
 	}
-	if(cmd == "addNote") {
+	if(cmd == "addNote" || cmd == "an") {
 		out << "Please add some note here: " << endl;
 		string note;
 		std::getline(in, note);
@@ -54,7 +53,7 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 			word_kernel -> addNote(note);
 		return true;
 	}
-	if(cmd == "addTag") {
+	if(cmd == "addTag" || cmd == "at") {
 		out << "Please add a tag : " << endl;
 		string tag;
 		in >> tag;
@@ -112,7 +111,7 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 		return true;
 	}
 	*/
-	if(cmd == "addSentence") {
+	if(cmd == "addSentence" || cmd == "as") {
 		string str;
 		printLn("Please add a sentence: ");
 		getline(in, str);
@@ -130,7 +129,7 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 		word_kernel -> addSentence(str, tran);
 		return true;
 	}
-	if(cmd == "delNote") {
+	if(cmd == "delNote" || cmd == "dn") {
 		int noteId = -1;
 		out << "Note: " << endl;
 		int i = 0;
@@ -149,7 +148,7 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 		word_kernel -> delNote(noteId); 
 		return true;
 	}
-	if(cmd == "delTag") {
+	if(cmd == "delTag" || cmd == "dt") {
 		string tag;
 		printLn("Please enter the tag you want to delete: ");
 		in >> tag;
@@ -183,7 +182,7 @@ bool Shell::parseCommandInWordKernel(string const& command, WordKernel* word_ker
 		return true;
 	}
 	*/
-	if(cmd == "delSentence") {
+	if(cmd == "delSentence" || cmd == "ds") {
 		out << "Sentence: " << endl;
 		int i = 0;
 		for(auto const& sentence: word->userSentenceList)

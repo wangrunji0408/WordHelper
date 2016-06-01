@@ -2,7 +2,7 @@ include config.make
 
 LD_FLAG = -Lshell -Lkernel -Lword
 LD_LIB = -lshell -lkernel -lword
-TARGET := ..$(SLASH)release$(SLASH)$(OS_NAME)
+TARGET := ..$(SLASH)runtime$(SLASH)$(OS_NAME)
 
 all: libword libkernel libshell main copy
 
@@ -19,7 +19,7 @@ libword:
 	cd word && make
 
 copy:
-	-mkdir ..$(SLASH)release
+	-mkdir ..$(SLASH)runtime
 	-mkdir $(TARGET)
 	$(CP) main$(EXE_POSTFIX) $(TARGET)
 	$(CP) word$(SLASH)libword$(DSO_POSTFIX) $(TARGET)
