@@ -48,7 +48,7 @@ void Shell::printHelpInfo () const
 	printLn("  [s] search  <word>");
 	printLn("  [w] word    <word>");
 	printLn("  [t] test    [test_mode] [word_size]");
-	printLn("                  └---> spell recall choiceE choiceC");
+	printLn("                  |---> spell recall choiceE choiceC");
 	printLn("  [a] analyze <file>");
 	printLn("  [ ] set     <variable> <value>");
 	printLn("  [ ] get");
