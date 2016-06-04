@@ -13,7 +13,7 @@
 
 release/
 runtime/
-src/main
-src/zjl_worddata/DataBaseInit
-src/zjl_worddata/WordParse_*
-!src/zjl_worddata/WordParse_*.cpp
+source/main
+source/zjl_worddata/DataBaseInit
+source/zjl_worddata/WordParse_*
+!source/zjl_worddata/WordParse_*.cpp

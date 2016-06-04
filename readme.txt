@@ -1,34 +1,34 @@
-# WordHelper
+# Readme for Task 
 
-A useful tool helps you remember words better.
+### 小组成员
 
-Developed by 赵嘉霖 彭炳辉 王润基.
+* 王润基：2015011279 计算机系 计53
+* 赵嘉霖：2015011344 计算机系 计55
+* 彭炳辉：2015012403 交叉信息院 计科50
 
-### 编译方法
+### 目录内容
 
-打开终端至本程序根目录，进入`source/`，使用`make`编译。
+- `source`：所有源代码
 
-make会将所有文件生成在`runtime/$(OS_NAME)/`文件夹中。
+  * `word`：Word模块，负责单词信息
 
-其中`OS_NAME`=`Windows`/`Linux`/`Darwin`(Mac)，取决于所在系统。
+  - `kernel`：Kernel模块，负责核心功能
+  - `shell`：Shell模块，负责用户交互
+  - `zjl_worddata`：格式化词库时所用的小程序
+  - `user_data`：样例用户数据
 
-**Windows用户注意：**
+- `resource`：所有资源文件。其中包括：
 
-由于Windows文件编码原因，需要手动将词典文件转码：
+  - 格式化词库
+  - 原始词库
+  - 文本分析样例
 
-将词典文件`dictionary.txt`用记事本打开，原地另存为，将编码方式修改为`ANSI`。
+- `docs`：所有文档。其中包括：
 
-### 运行方法
+  - `design.md`：说明文档
+  - `instruction.pdf`：使用说明
+  - `presentation.key`：展示PPT
 
-#### Windows
+- `runtime`：程序运行时所需的一切文件
 
-打开终端，进入`runtime/Windows/`，输入`main.exe`运行。
-
-#### Linux
-
-打开终端，进入`runtime/Linux/`，输入`./run_on_linux`运行。
-
-#### Mac
-
-打开终端，进入`runtime/Darwin/`，输入`./main`运行。
-
+  按系统分别置于不同文件夹。
