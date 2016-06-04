@@ -1,0 +1,133 @@
+# 关于WordHelper的说明文档
+
+## 基础问题:
+
+### WordHelper 是什么 ?
+
+回答: WordHelper是一款自主研发的app，它可以帮助你轻松愉快地学习英语。WordHelper 可以在windows, mac和linux上运行，目前它是基于命令行运行的。
+
+### WordHelper 可以做什么？
+
+回答： WordHelper 旨在帮助您更加轻松愉快地学习英语。你可以用它来搜索单词，记录个性化的笔记，制定适合您的背单词方式，解析英文文本。
+
+### 从哪获得WordHelper?
+
+你可以从github上获取WordHelper， 目前WordHelper是免费开源的 [git@github.com:wangrunji0408/WordHelper.git](git@github.com:wangrunji0408/WordHelper.git)
+
+## 启动WordHelper:
+
+### 编译方法
+
+打开终端至本程序根目录，进入`source/`，使用`make`编译。
+
+make会将所有文件生成在`runtime/$(OS_NAME)/`文件夹中。
+
+其中`OS_NAME`=`Windows`/`Linux`/`Darwin`(Mac)，取决于所在系统。
+
+**Windows用户注意：**
+
+由于Windows文件编码原因，需要手动将词典文件转码：
+
+将词典文件`dictionary.txt`用记事本打开，原地另存为，将编码方式修改为`ANSI`。
+
+### 运行方法
+
+#### Windows
+
+打开终端，进入`runtime/Windows/`，输入`main.exe`运行。
+
+#### Linux
+
+打开终端，进入`runtime/Linux/`，输入`./run_on_linux`运行。
+
+#### Mac
+
+打开终端，进入`runtime/Darwin/`，输入`./main`运行。
+
+### 登陆
+
+一旦您成功运行程序后，系统会提示您输入用户名。用户名是您个人的单词账户。如果您没有输入用户名，系统会自动问您设置一个默认的用户名。
+
+## 操作：
+
+### 帮助
+
+当您不知道下一步改输入什么样的命令或是忘记命令，您可以输入`help`来获得一个help list。
+![picture1](picture1.png) 
+
+### 搜索单词:
+
+输入 `s <word>` 来搜索单词，如果您记不住单词的全拼，您可以输入部分字母以查询。![picture2](picture2.png)
+
+### 搜索历史：
+
+如果您想查询历史纪录，请输入：`h [max_size]`。 其中size代表您想查询的历史纪录数量. ![picture3](picture3.png)
+
+### 文本分析：
+
+如果您想对一片英文文本进行分析，请输入：`a <file>`, 文本分析会自动帮您挑出高频词汇，生词还有不在词库中的单词。
+![picture4](picture4.png)
+### 单词测试：
+
+#### 选择模式：
+
+如果您想单词测试，请输入`[t] [test_mode] [word_size]`，目前我们有拼写，回忆，给中文选英文，给英文选中文四种模式，它们分别对应`spell`, `recall`, `choiceE`, `choiceC`.
+
+#### 测试进行时
+
+进入测试界面后，请您根据提示输入答案，每道题过后，系统会自动询问您是否继续测试，同时您也可以选择是否现实题目答案，具体命令如下：
+
+`c`: 继续测试.
+
+`a`: 显示答案。
+
+`s`: 显示单词详细信息
+
+`m`: 进入单词管理界面。  
+
+*注意：当您完成单词管理并退出后，您会自动返回测试当前界面。*
+
+`i`: 我不希望这个单词继续出现在测试列表上了。
+
+`?`: 获得帮助。
+
+`x`: 退出测试。
+![picture5](picture5.png)
+
+### 变量查看
+
+您可以输入`get`来查看系统默认变量
+
+### 变量设置
+
+您可以输入`set <variable> <value>`来设置系统变量。
+![picture6](picture6.png)
+
+### 单词管理
+
+您可以输入 `w <word>` 来进行单词管理。进入单词管理界面后，你可以输入`help`来获得一个help list，内容如下： 
+
+`help` 获得帮助
+
+`exit` 退出单词管理
+
+`addNote` 添加笔记
+
+`addTag` 添加标签
+
+`addSentence` 添加例句
+
+`delNote` 删除笔记
+
+`delTag`删除标签
+
+`delSentence` 删除句子
+
+![picture7](picture7.png)
+
+## 联系我们
+
+如果您发现本产品存在漏洞，请您及时联系我们。
+ 
+
+
